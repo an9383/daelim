@@ -1,0 +1,716 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.bs.deliveryOrderAdmMapper">
+	
+	<resultMap id="DeliveryOrderAdmVo" type="mes.domain.bs.DeliveryOrderAdmVo">
+		<result property="doNo"			column="DO_NO"				/>
+		<result property="ordGubun"		column="ORD_GUBUN"			/>
+		<result property="ordGubunNm"	column="ORD_GUBUN_NM"		/>
+		<result property="doCorpCd"		column="DO_CORP_CD"			/>
+		<result property="doCorpNm"		column="DO_CORP_NM"			/>
+		<result property="doDate"		column="DO_DATE"			/>
+		<result property="doDesc"		column="DO_DESC"			/>
+		
+		<result property="doSeq"		column="DO_SEQ"				/>
+		<result property="poCorpCd"		column="PO_CORP_CD"			/>
+		<result property="poCorpNm"		column="PO_CORP_NM"			/>
+		<result property="itemCd"		column="ITEM_CD"			/>
+		<result property="itemRev"		column="ITEM_REV"			/>
+		<result property="itemSeq"		column="ITEM_SEQ"			/>
+		<result property="itemNm"		column="ITEM_NM"			/>
+		<result property="targetQty"	column="TARGET_QTY"			/>
+		<result property="outputQty"	column="OUTPUT_QTY"			/>
+		<result property="remainQty"	column="REMAIN_QTY"			/>
+		<result property="dlvDate"		column="DLV_DATE"			/>
+		<result property="doStatus"		column="DO_STATUS"			/>
+		<result property="doStatusNm"	column="DO_STATUS_NM"		/>
+		<result property="regId"		column="REG_ID"				/>
+		<result property="regDate"		column="REG_DATE"			/>
+		<result property="updId"		column="UPD_ID"				/>
+		<result property="updDate"		column="UPD_DATE"			/>
+		
+		<result property="startDate"	column="START_DATE"			/>
+		<result property="endDate"		column="END_DATE"			/>
+		
+		<!-- 추가사항 -->
+		<result property="itemModel"	column="ITEM_MODEL"			/>
+		<result property="itemModelNm"	column="ITEM_MODEL_NM"		/>
+		<result property="lhrhCd"		column="LHRH_CD"			/>
+		<result property="lhrhCdNm"		column="LHRH_CD_NM"			/>
+		<result property="itemColor"	column="ITEM_COLOR"			/>
+		<result property="boxCount"		column="BOX_COUNT"			/>
+		<result property="itemUnit"		column="ITEM_UNIT"			/>
+		<result property="itemUnitNm"	column="ITEM_UNIT_NM"		/>
+		<result property="doDtlDate"	column="DO_DTL_DATE"		/>
+		<result property="lhrhNm"		column="LHRH_NM"			/>
+		<result property="dealCorpCd"	column="DEAL_CORP_CD"		/>
+		<result property="dealCorpNm"	column="DEAL_CORP_NM"		/>
+		<result property="lotNo"		column="LOT_NO"				/>
+		<result property="inspectDate"	column="INSPECT_DATE"		/>
+		<result property="outputDate"	column="OUTPUT_DATE"		/>
+		<result property="itemGubunNm"	column="ITEM_GUBUN_NM"		/>
+		<result property="doNoSev"		column="DO_NO_SEV"			/>
+		<result property="itemCus"		column="ITEM_CUS"			/>
+		<result property="itemCusNm"	column="ITEM_CUS_NM"		/>
+		<result property="outDate"		column="OUT_DATE"			/>
+		<result property="outQty"		column="OUT_QTY"			/>
+		<result property="mainGubun"	column="MAIN_GUBUN"			/>
+		<result property="groupType"	column="GROUP_TYPE"			/>
+		<result property="groupTypeByD"	column="GROUP_TYPE_BY_D"	/>
+		<result property="groupTypeByM"	column="GROUP_TYPE_BY_M"	/>
+			
+		<result property="outUnitCost"	column="OUT_UNIT_COST"		/>
+		<result property="outAmt"		column="OUT_AMT"			/>
+		<result property="dataGubun"	column="DATA_GUBUN"			/>
+		
+		<result property="barcodeNo"	column="BARCODE_NO"			/>
+		<result property="corpOutYn"	column="CORP_OUT_YN"		/>
+	</resultMap>
+
+	<!-- 출고의뢰등록 목록조회 -->
+	<select id="deliveryOrderAdmList" resultMap="DeliveryOrderAdmVo">
+		SELECT
+			A.DO_NO,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM,
+			D.ITEM_CD,
+			D.ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.LHRH_CD AND X.BASE_GROUP_CD='097') LHRH_NM,
+			D.ITEM_COLOR,
+			B.LOT_NO,
+			C.DEAL_CORP_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM,
+			B.TARGET_QTY,
+			B.OUTPUT_QTY,
+			B.REMAIN_QTY,
+			A.DO_DATE,
+			B.INSPECT_DATE,
+			B.OUTPUT_DATE,
+			DO_STATUS,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.DO_STATUS AND X.BASE_GROUP_CD='061') DO_STATUS_NM
+		FROM TB_DELIVERY_ORDER_ADM A, TB_DELIVERY_ORDER_DTL B, TB_DEAL_CORP_ADM C, TB_ITEM_INFO_ADM D
+		WHERE A.DO_NO = B.DO_NO
+		AND B.PO_CORP_CD = C.DEAL_CORP_CD
+		AND B.ITEM_SEQ = D.ITEM_SEQ
+		<if test="doStatus!=null and !doStatus.equals('')">
+			AND DO_STATUS = #{doStatus}
+		</if>
+		<if test="dealCorpCd!=null and !dealCorpCd.equals('')">
+			AND DEAL_CORP_CD = #{dealCorpCd}
+		</if>
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+			AND B.ITEM_SEQ = #{itemSeq}
+		</if>
+		<if test="mainGubun!=null and !mainGubun.equals('')">
+			AND D.MAIN_GUBUN = #{mainGubun}
+		</if>
+		<if test="lotNo!=null and !lotNo.equals('')">
+			AND B.LOT_NO = #{lotNo}
+		</if>
+		<if test="barcodeNo!=null and !barcodeNo.equals('')">
+				AND B.LOT_NO IN (
+								SELECT ORD_LOT_NO 
+								FROM TB_WORK_ORDER_PRCSS 
+								WHERE WORK_ORD_NO IN ( 
+														SELECT WORK_ORD_NO 
+														FROM TB_WORK_ORDER_MATRL 
+														WHERE BARCODE_NO = #{barcodeNo}
+														GROUP BY WORK_ORD_NO )
+													)
+		
+		</if>
+		<if test="startDate!=null and !startDate.equals('')">
+		AND A.DO_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+	</select>
+	
+	<!-- 출고의뢰등록 목록조회 -->
+	<select id="deliveryOrderAdmListNew" resultMap="DeliveryOrderAdmVo">
+		SELECT
+			A.DO_NO,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM,
+			D.MAIN_GUBUN,
+			B.ITEM_SEQ,
+			D.ITEM_CD,
+			D.ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.LHRH_CD AND X.BASE_GROUP_CD='097') LHRH_NM,
+			D.ITEM_COLOR,			
+			C.DEAL_CORP_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM,
+			SUM(B.TARGET_QTY) TARGET_QTY,
+			SUM(B.OUTPUT_QTY) OUTPUT_QTY,
+			SUM(B.REMAIN_QTY) REMAIN_QTY,
+			A.DO_DATE,
+			--B.INSPECT_DATE,
+			--B.OUTPUT_DATE,
+			DO_STATUS,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.DO_STATUS AND X.BASE_GROUP_CD='061') DO_STATUS_NM
+		FROM TB_DELIVERY_ORDER_ADM A, TB_DELIVERY_ORDER_DTL B, TB_DEAL_CORP_ADM C, TB_ITEM_INFO_ADM D
+		WHERE A.DO_NO = B.DO_NO
+		AND B.PO_CORP_CD = C.DEAL_CORP_CD
+		AND B.ITEM_SEQ = D.ITEM_SEQ
+		AND (D.SUPPLY_TYPE IS NULL OR D.SUPPLY_TYPE='001')
+		<if test="doStatus!=null and !doStatus.equals('')">
+			AND DO_STATUS = #{doStatus}
+		</if>
+		<if test="dealCorpCd!=null and !dealCorpCd.equals('')">
+			AND DEAL_CORP_CD = #{dealCorpCd}
+		</if>
+		<if test="mainGubun!=null and !mainGubun.equals('')">
+			AND D.MAIN_GUBUN = #{mainGubun}
+		</if>
+		AND A.DO_DATE BETWEEN #{startDate} AND #{endDate}
+		
+		GROUP BY A.DO_NO,	
+			D.MAIN_GUBUN,	
+			B.ITEM_SEQ,	
+			D.ITEM_CD,
+			D.ITEM_NM,			
+			D.ITEM_COLOR,			
+			C.DEAL_CORP_NM,		
+			A.DO_DATE,
+			--B.INSPECT_DATE,
+			--B.OUTPUT_DATE,
+			DO_STATUS,
+			D.ITEM_GUBUN,
+			D.ITEM_MODEL,
+			D.LHRH_CD,
+			D.ITEM_UNIT
+			
+		ORDER BY A.DO_DATE,C.DEAL_CORP_NM
+	</select>
+	
+	<!-- 출고의뢰등록 목록조회 -->
+	<select id="deliveryOrderAdmListDtl" resultMap="DeliveryOrderAdmVo">
+		SELECT
+			A.DO_NO,
+			B.DO_SEQ,
+			B.DO_NO_SEV,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM,
+			D.ITEM_CD,
+			D.ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.LHRH_CD AND X.BASE_GROUP_CD='097') LHRH_NM,
+			D.ITEM_COLOR,
+			B.LOT_NO,
+			C.DEAL_CORP_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = D.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM,
+			B.TARGET_QTY,
+			B.OUTPUT_QTY,
+			B.REMAIN_QTY,
+			A.DO_DATE,
+			B.INSPECT_DATE,
+			B.OUTPUT_DATE,
+			DO_STATUS,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.DO_STATUS AND X.BASE_GROUP_CD='061') DO_STATUS_NM
+		FROM TB_DELIVERY_ORDER_ADM A, TB_DELIVERY_ORDER_DTL B, TB_DEAL_CORP_ADM C, TB_ITEM_INFO_ADM D
+		WHERE A.DO_NO = B.DO_NO
+		AND B.PO_CORP_CD = C.DEAL_CORP_CD
+		AND B.ITEM_SEQ = D.ITEM_SEQ
+		AND A.DO_NO = #{doNo}		
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+			AND B.ITEM_SEQ = #{itemSeq}
+		</if>
+		
+	</select>
+	
+	<!--출고의뢰등록 상세조회 -->
+	<select id="deliveryOrderAdmRead" resultMap="DeliveryOrderAdmVo">
+		SELECT 
+			A.DO_NO
+			, A.DO_SEQ
+			, A.PO_CORP_CD
+			, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = A.PO_CORP_CD) PO_CORP_NM
+			, A.ITEM_SEQ
+			, B.ITEM_CD
+			, B.ITEM_NM
+			, B.ITEM_MODEL
+			, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM
+			, B.LHRH_CD
+			, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.LHRH_CD AND X.BASE_GROUP_CD='097') LHRH_CD_NM
+			, B.ITEM_COLOR
+			, B.BOX_COUNT
+			, B.ITEM_UNIT
+			, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM
+			, A.TARGET_QTY
+			, A.DLV_DATE
+		FROM TB_DELIVERY_ORDER_DTL A
+		LEFT JOIN TB_ITEM_INFO_ADM B 
+		ON A.ITEM_SEQ = B.ITEM_SEQ
+		WHERE A.PO_CORP_CD = #{poCorpCd}
+		AND B.ITEM_SEQ = #{itemSeq}
+		<if test="doNo != null and !doNo.equals('')">
+		AND A.DO_NO = #{doNo}
+		</if>
+	</select>
+	
+	<!-- 출고의뢰등록  ADM 등록 -->
+	<insert id="deliveryOrderAdmCreate">
+		INSERT INTO TB_DELIVERY_ORDER_ADM		(
+			DO_NO,
+			DO_DATE,
+			DO_DESC,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{doNo},
+			#{doDate},
+			#{doDesc},
+			#{regId},
+			getDate()
+		)
+	</insert>
+	
+	<!-- 출고의뢰등록  ADM 수정 -->
+	<update id="deliveryOrderAdmUpdate">
+		UPDATE	TB_DELIVERY_ORDER_ADM		 
+		SET	
+			<if test="ordGubun!=null and !ordGubun.equals('')">
+			ORD_GUBUN = #{ordGubun},
+			</if>
+			<if test="doCorpCd!=null and !doCorpCd.equals('')">
+			DO_CORP_CD = #{doCorpCd},
+			</if>
+			<if test="doDate!=null and !doDate.equals('')">
+			DO_DATE = #{doDate},
+			</if>
+			<if test="doDesc!=null and !doDesc.equals('')">
+			DO_DESC = #{doDesc},
+			</if>
+			UPD_ID = #{updId},
+			UPD_DATE = getDate()
+		WHERE	DO_NO = #{doNo}
+	</update>
+	
+		
+	<!-- 출고의뢰등록  DTL 등록 -->
+	<insert id="deliveryOrderDtlCreate">
+		INSERT INTO TB_DELIVERY_ORDER_DTL	(
+			DO_NO,
+			DO_SEQ,
+			DO_NO_SEV,
+			PO_CORP_CD,
+			LOT_NO,
+			ITEM_SEQ,
+			TARGET_QTY,
+			OUTPUT_QTY,
+			REMAIN_QTY,
+			INSPECT_DATE,
+			OUTPUT_DATE,
+			DO_STATUS,
+			CORP_OUT_YN,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{doNo},
+			#{doSeq},
+			#{doNoSev},
+			#{poCorpCd},
+			#{lotNo},
+			#{itemSeq},
+			#{targetQty},
+			#{outputQty},
+			#{remainQty},
+			#{inspectDate},
+			#{outputDate},
+			#{doStatus},
+			#{corpOutYn},
+			#{regId},
+			getDate()
+		)
+	</insert>
+	
+	<!-- 출고의뢰등록  DTL 수정 -->
+	<update id="deliveryOrderDtlUpdate">
+		UPDATE	TB_DELIVERY_ORDER_DTL					 
+		SET	
+			<if test="poCorpCd!=null and !poCorpCd.equals('')">
+			PO_CORP_CD = #{poCorpCd},
+			</if>
+			<if test="itemSeq!=null and !itemSeq.equals('')">
+			ITEM_SEQ = #{itemSeq},
+			</if>
+			<if test="targetQty!=null and !targetQty.equals('')">
+			TARGET_QTY = #{targetQty},
+			</if>
+			<if test="targetQty!=null and !targetQty.equals('')">
+			REMAIN_QTY = #{targetQty} - OUTPUT_QTY ,
+			</if>
+			<if test="dlvDate!=null and !dlvDate.equals('')">
+			DLV_DATE = #{dlvDate},
+			</if>
+			<if test="outputQty!=null and !outputQty.equals('')">
+			OUTPUT_QTY = #{outputQty},
+			REMAIN_QTY = TARGET_QTY - #{outputQty} ,
+			</if>
+			<if test="inspectDate!=null and !inspectDate.equals('')">
+			INSPECT_DATE = #{inspectDate},
+			</if>
+			<if test="outputDate!=null and !outputDate.equals('')">
+			OUTPUT_DATE = #{outputDate},
+			</if>
+			<if test="doStatus!=null and !doStatus.equals('')">
+			DO_STATUS = #{doStatus},
+			</if>
+			
+			UPD_ID = #{updId},
+			UPD_DATE = getDate()
+		WHERE 1=1
+		AND DO_NO = #{doNo}
+		<if test="doSeq != null and !doSeq.equals('')">
+		AND	DO_SEQ = #{doSeq}
+		</if>
+		<if test="doNoSev != null and !doNoSev.equals('')">
+		AND DO_NO_SEV = #{doNoSev}
+		</if>
+	</update>
+	
+	
+	<!-- 출고의뢰등록  ADM 삭제 -->
+	<delete id="deliveryOrderAdmDelete">
+		DELETE FROM TB_DELIVERY_ORDER_ADM		 
+		WHERE	DO_NO = #{doNo}
+	</delete>
+	
+	<!-- 출고의뢰등록  DTL 삭제 -->
+	<delete id="deliveryOrderDtlDelete">
+		DELETE FROM TB_DELIVERY_ORDER_DTL			 
+		WHERE	DO_NO = #{doNo}
+		<if test="doSeqCheck != null and !doSeqCheck.equals('')">
+		AND DO_SEQ = #{doSeq}
+		</if>
+	</delete>
+	
+	<!-- 출고의뢰등록 출고의뢰번호 생성 -->
+	<select id="getDoNo" resultType="String">
+		SELECT ISNULL(RIGHT('000' + CAST(MAX(RIGHT(DO_NO,3))+1 AS NVARCHAR),3), '001') FROM TB_DELIVERY_ORDER_ADM WHERE SUBSTRING(DO_NO,0,9) = #{date}
+	</select>
+	
+	<!-- 출고의뢰등록 출고의뢰시퀀스 생성 -->
+	<select id="getDoSeq" resultType="Integer">
+		SELECT ISNULL(MAX(DO_SEQ)+1,1) FROM TB_DELIVERY_ORDER_DTL WHERE DO_NO= #{doNo}
+	</select>
+
+	<!-- 출고마감 마감처리 -->
+	<update id="doStatusUpdate">
+		UPDATE  TB_DELIVERY_ORDER_DTL 
+		SET DO_STATUS = '004' 
+		WHERE DO_NO = #{doNo} 
+		AND DO_SEQ = #{doSeq}
+	</update>
+	
+	<!-- LOT 존재 확인 -->
+	<select id="deliveryOrderDtlExist" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM TB_DELIVERY_ORDER_DTL A
+		WHERE 1=1
+		<if test="lotNo!=null and !lotNo.equals('')">
+		AND LOT_NO = #{lotNo}
+		</if>
+		<if test="doNo!=null and !doNo.equals('')">
+		AND DO_NO = #{doNo} 
+		</if>
+		
+	</select>
+	
+	<!-- 출고의뢰등록 DO_NO_SEV 번호 읽거나 생성 -->
+	<select id="getDoNoSev" resultType="String">
+		IF EXISTS (
+			SELECT 
+			DO_NO_SEV
+			FROM TB_DELIVERY_ORDER_DTL
+			WHERE DO_NO = #{doNo}
+			AND ITEM_SEQ = #{itemSeq}
+			GROUP BY DO_NO_SEV
+		)
+		BEGIN
+			SELECT DO_NO_SEV
+			FROM TB_DELIVERY_ORDER_DTL
+			WHERE DO_NO = #{doNo}
+			AND ITEM_SEQ = #{itemSeq}
+			GROUP BY DO_NO_SEV
+		END
+		ELSE
+		BEGIN
+			SELECT 
+			ISNULL(MAX(DO_NO_SEV)+1, 1) AS DO_NO_SEV
+			FROM TB_DELIVERY_ORDER_DTL
+			WHERE DO_NO = #{doNo}
+		END
+	</select>
+	
+	<!-- 출고현황(봉제) 전체조회 -->
+	<select id="deliveryOrderAdmTotalList" resultMap="DeliveryOrderAdmVo">
+		SELECT
+			(CASE WHEN ITEM_SEQ_Group=1 THEN '합계' ELSE (CASE WHEN OUTPUT_DATE_Group=1 THEN '소계' ELSE '기본' END) END) GROUP_TYPE,
+			ISNULL(T.ITEM_CUS,'NONE') ITEM_CUS,
+			ISNULL(T.ITEM_CUS_NM,'NONE') ITEM_CUS_NM,
+			IIA.ITEM_CD,
+			IIA.ITEM_NM,
+		    IIA.ITEM_MODEL,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM,
+			ISNULL(T.OUT_DATE,'NONE') OUT_DATE,
+			T.ITEM_SEQ,
+			T.OUT_QTY,
+			ISNULL((SELECT TOP(1)
+					EXPORT_COST
+				FROM TB_ITEM_COST_LIST
+				WHERE 1=1
+				AND ITEM_SEQ=T.ITEM_SEQ
+				AND EXPORT_DATE <![CDATA[<=]]> T.OUT_DATE
+				ORDER BY EXPORT_DATE DESC, REG_DATE DESC),'0') OUT_UNIT_COST,
+			CONVERT(FLOAT,ISNULL(T.OUT_QTY,0)) * CONVERT(FLOAT,ISNULL((SELECT TOP(1)
+					EXPORT_COST
+				FROM TB_ITEM_COST_LIST
+				WHERE 1=1
+				AND ITEM_SEQ=T.ITEM_SEQ
+				AND EXPORT_DATE <![CDATA[<=]]> T.OUT_DATE
+				ORDER BY EXPORT_DATE DESC, REG_DATE DESC),'0')) OUT_AMT,
+			T.DATA_GUBUN
+		FROM (
+			SELECT
+				DATA_GUBUN
+				, ITEM_CUS
+				, ITEM_CUS_NM
+				, OUT_DATE
+				, ITEM_SEQ
+				, SUM(OUT_QTY) OUT_QTY
+				, ITEM_CUS_Group
+				, OUTPUT_DATE_Group
+				, ITEM_SEQ_Group
+			FROM (
+				<if test="groupTypeByT != null">
+					<if test="groupTypeByT eq 'N'.toString()">
+				SELECT
+					(CASE WHEN GROUPING(DOD_TB.PO_CORP_CD)=1 THEN '' ELSE (CASE WHEN GROUPING(OUTPUT_DATE)=1 THEN '' ELSE 'D' END) END) DATA_GUBUN
+					, DOD_TB.PO_CORP_CD ITEM_CUS
+					, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=DOD_TB.PO_CORP_CD) ITEM_CUS_NM
+					, OUTPUT_DATE OUT_DATE
+					, DOD_TB.ITEM_SEQ
+					, SUM(OUTPUT_QTY) OUT_QTY
+					, GROUPING(DOD_TB.PO_CORP_CD) ITEM_CUS_Group
+					, GROUPING(OUTPUT_DATE) OUTPUT_DATE_Group
+					, GROUPING(DOD_TB.ITEM_SEQ) ITEM_SEQ_Group
+				FROM TB_DELIVERY_ORDER_DTL DOD_TB
+				LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+				ON DOD_TB.ITEM_SEQ = IIA.ITEM_SEQ
+				WHERE 1=1
+				AND IIA.MAIN_GUBUN = #{mainGubun}
+		
+				<if test="startDate!=null and !startDate.equals('')">
+				AND OUTPUT_DATE BETWEEN #{startDate} AND #{endDate}
+				</if>
+				<if test="itemCus!=null and !itemCus.equals('')">
+				AND DOD_TB.PO_CORP_CD = #{itemCus}
+				</if>
+				<if test="doStatus003 != null and !doStatus003.equals('')">
+				AND DOD_TB.DO_STATUS = '003'
+				</if>
+			
+				GROUP BY ROLLUP(
+					DOD_TB.ITEM_SEQ,
+					DOD_TB.PO_CORP_CD,
+					OUTPUT_DATE)
+				HAVING 1=1
+		
+				AND( GROUPING(DOD_TB.PO_CORP_CD) = 0
+				AND GROUPING(OUTPUT_DATE)= 0
+				AND GROUPING(DOD_TB.ITEM_SEQ)= 0
+				)
+				
+				<!-- 품목별 소계  -->
+				<if test="groupTypeByD != null">
+					<if test="groupTypeByD eq 'Y'.toString()">
+						OR( GROUPING(DOD_TB.PO_CORP_CD) = 1
+						AND GROUPING(OUTPUT_DATE)= 1
+						AND GROUPING(DOD_TB.ITEM_SEQ)= 0
+						)
+					</if>
+				</if>
+				<!-- 합계  -->
+				<if test="groupTypeByM != null">
+					<if test="groupTypeByM eq 'Y'.toString()">
+						OR( GROUPING(DOD_TB.PO_CORP_CD) = 1
+						AND GROUPING(OUTPUT_DATE)= 1
+						AND GROUPING(DOD_TB.ITEM_SEQ)= 1
+						)
+					</if>
+				</if>
+				
+				UNION ALL
+					</if>
+				</if>
+				
+				SELECT	
+					(CASE WHEN GROUPING(IIA.ITEM_CUS)=1 THEN '' ELSE (CASE WHEN GROUPING(DOD_TB.TO_DATE)=1 THEN '' ELSE 'T' END) END) DATA_GUBUN
+					, IIA.ITEM_CUS
+					, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=IIA.ITEM_CUS) ITEM_CUS_NM
+					, DOD_TB.TO_DATE OUT_DATE
+					, DOD_TB.ITEM_SEQ
+					, -SUM(CONVERT(INT, DOD_TB.TO_QTY)) OUT_QTY
+					, GROUPING(IIA.ITEM_CUS) ITEM_CUS_Group
+					, GROUPING(DOD_TB.TO_DATE) OUTPUT_DATE_Group
+					, GROUPING(DOD_TB.ITEM_SEQ) ITEM_SEQ_Group
+				FROM TB_TAKEOFF_ADM DOD_TB
+				LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+				ON DOD_TB.ITEM_SEQ = IIA.ITEM_SEQ
+				WHERE 1=1
+				AND IIA.MAIN_GUBUN = #{mainGubun}
+		
+				<if test="startDate!=null and !startDate.equals('')">
+				AND DOD_TB.TO_DATE BETWEEN #{startDate} AND #{endDate}
+				</if>
+				<if test="itemCus!=null and !itemCus.equals('')">
+				AND IIA.ITEM_CUS = #{itemCus}
+				</if>
+			
+				GROUP BY ROLLUP(
+					DOD_TB.ITEM_SEQ,
+					IIA.ITEM_CUS,
+					DOD_TB.TO_DATE)
+				HAVING 1=1
+		
+				AND( GROUPING(IIA.ITEM_CUS) = 0
+				AND GROUPING(DOD_TB.TO_DATE)= 0
+				AND GROUPING(DOD_TB.ITEM_SEQ)= 0
+				)
+				
+				<!-- 품목별 소계  -->
+				<if test="groupTypeByD != null">
+					<if test="groupTypeByD eq 'Y'.toString()">
+						OR( GROUPING(IIA.ITEM_CUS) = 1
+						AND GROUPING(DOD_TB.TO_DATE)= 1
+						AND GROUPING(DOD_TB.ITEM_SEQ)= 0
+						)
+					</if>
+				</if>
+				<!-- 합계  -->
+				<if test="groupTypeByM != null">
+					<if test="groupTypeByM eq 'Y'.toString()">
+						OR( GROUPING(IIA.ITEM_CUS) = 1
+						AND GROUPING(DOD_TB.TO_DATE)= 1
+						AND GROUPING(DOD_TB.ITEM_SEQ)= 1
+						)
+					</if>
+				</if>
+			) A
+			GROUP BY
+				DATA_GUBUN
+				, ITEM_CUS
+				, ITEM_CUS_NM
+				, OUT_DATE
+				, ITEM_SEQ
+				, ITEM_CUS_Group
+				, OUTPUT_DATE_Group
+				, ITEM_SEQ_Group
+		) T
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+		ON T.ITEM_SEQ=IIA.ITEM_SEQ
+		WHERE 1=1
+		AND (IIA.SUPPLY_TYPE IS NULL OR IIA.SUPPLY_TYPE!='003')
+
+		<if test="groupTypeByD eq 'Y'.toString() or groupTypeByM eq 'Y'.toString() ">
+		ORDER BY IIA.ITEM_CD DESC, OUT_DATE ASC
+		</if>
+		<if test="groupTypeByD eq 'N'.toString() and groupTypeByM eq 'N'.toString()">
+		ORDER BY OUT_DATE ASC,T.ITEM_CUS_NM
+		</if>
+
+	</select>
+	
+	<!-- 출고현황(봉제) 상세조회-->
+	<select id="deliveryOrderAdmDetailList" resultMap="DeliveryOrderAdmVo">
+		SELECT * FROM (
+			SELECT	
+				DOD_TB.DO_NO
+				, DOD_TB.DO_SEQ
+				, DOD_TB.DO_NO_SEV
+				, DOD_TB.PO_CORP_CD ITEM_CUS
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=DOD_TB.PO_CORP_CD) ITEM_CUS_NM
+				, OUTPUT_DATE OUT_DATE
+				, IIA.ITEM_SEQ
+				, IIA.ITEM_CD
+				, IIA.ITEM_NM
+				, IIA.ITEM_MODEL
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM
+				, DOD_TB.LOT_NO
+				, SUM(OUTPUT_QTY) OUT_QTY
+			FROM TB_DELIVERY_ORDER_DTL DOD_TB
+			LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+			ON DOD_TB.ITEM_SEQ=IIA.ITEM_SEQ
+			WHERE 1=1
+			AND IIA.MAIN_GUBUN = #{mainGubun}
+			GROUP BY DOD_TB.DO_NO,
+				DOD_TB.DO_SEQ,
+				DOD_TB.DO_NO_SEV,
+				DOD_TB.PO_CORP_CD,
+				OUTPUT_DATE,
+				IIA.ITEM_SEQ,
+				IIA.ITEM_CD,
+				IIA.ITEM_NM,
+				IIA.ITEM_MODEL,
+				DOD_TB.LOT_NO
+			HAVING 1=1
+			AND IIA.ITEM_SEQ=#{itemSeq}
+			AND DOD_TB.PO_CORP_CD=#{itemCus}
+			AND OUTPUT_DATE=#{outDate}
+			
+			UNION ALL
+			
+			SELECT	
+				'' DO_NO
+				, 0 DO_SEQ
+				, '' DO_NO_SEV
+				, IIA.ITEM_CUS
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=IIA.ITEM_CUS) ITEM_CUS_NM
+				, DOD_TB.TO_DATE OUT_DATE
+				, IIA.ITEM_SEQ
+				, IIA.ITEM_CD
+				, IIA.ITEM_NM
+				, IIA.ITEM_MODEL
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM
+				, DOD_TB.BARCODE_NO LOT_NO
+				, -SUM(CONVERT(INT, DOD_TB.TO_QTY)) OUT_QTY
+			FROM TB_TAKEOFF_ADM DOD_TB
+			LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+			ON DOD_TB.ITEM_SEQ=IIA.ITEM_SEQ
+			WHERE 1=1
+			AND IIA.MAIN_GUBUN = #{mainGubun}
+			GROUP BY 
+				-- DOD_TB.DO_NO,
+				-- DOD_TB.DO_SEQ,
+				-- DOD_TB.DO_NO_SEV,
+				IIA.ITEM_CUS,
+				DOD_TB.TO_DATE,
+				IIA.ITEM_SEQ,
+				IIA.ITEM_CD,
+				IIA.ITEM_NM,
+				IIA.ITEM_MODEL,
+				DOD_TB.BARCODE_NO
+			HAVING 1=1
+			AND IIA.ITEM_SEQ = #{itemSeq}
+			AND IIA.ITEM_CUS = #{itemCus}
+			AND DOD_TB.TO_DATE = #{outDate}
+		) A
+		WHERE 1=1
+		<if test="dataGubun != null and !dataGubun.equals('')">
+		AND DO_NO ${dataGubun} ''
+		</if>
+		ORDER BY LOT_NO
+	</select>
+	
+	<select id="getTargetQty" resultType="int">
+		SELECT
+			ISNULL(SUM(TARGET_QTY), 0) TARGET_QTY
+		FROM TB_DELIVERY_ORDER_DTL
+		WHERE LOT_NO = #{lotNo}
+		<if test="checkNullCorpOutYn != null and !checkNullCorpOutYn.equals('')"> <!-- 협력사출고가 아닌 출고요청 확인 -->
+		AND CORP_OUT_YN IS NULL
+		</if>
+	</select>
+</mapper>

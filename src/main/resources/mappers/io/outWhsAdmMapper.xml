@@ -1,0 +1,2065 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.io.outWhsAdmMapper">
+
+	<resultMap id="OutWhsAdmVo" type="mes.domain.io.OutWhsAdmVo">
+		<result property="poNo"					column="PO_NO"				/>
+		<result property="poSeq"		    	column="PO_SEQ"				/>
+		<result property="inSeq"				column="IN_SEQ"				/>	
+		<result property="outSeq"				column="OUT_SEQ"			/>			
+		<result property="lotNo"				column="LOT_NO"				/>		
+		<result property="barcodeNo"			column="BARCODE_NO"			/>	
+		<result property="itemSeq"		  	  	column="ITEM_SEQ"			/>
+		<result property="upperItemSeq"		  	column="UPPER_ITEM_SEQ"		/>
+		<result property="upperItemCd"		  	column="UPPER_ITEM_CD"		/>
+		<result property="upperItemNm"		  	column="UPPER_ITEM_NM"		/>
+		<result property="upperItemModel"		column="UPPER_ITEM_MODEL"	/>
+		<result property="itemCd"		  	  	column="ITEM_CD"			/>
+		<result property="itemNm"		  	  	column="ITEM_NM"			/>
+		<result property="itemGubun"		    column="ITEM_GUBUN"			/>
+		<result property="itemGubunNm"			column="ITEM_GUBUN_NM"		/>
+		<result property="itemFifoGubun"		column="ITEM_FIFO_GUBUN"	/>
+		<result property="itemFifoGubunNm"		column="ITEM_FIFO_GUBUN_NM"	/>
+		<result property="outSlipNo"		    column="OUT_SLIP_NO"		/>
+		<result property="outSlipSeq"		    column="OUT_SLIP_SEQ"		/>
+		<result property="outGubun"		    	column="OUT_GUBUN"			/>
+		<result property="outWorker"		    column="OUT_WORKER"			/>
+		
+		<result property="mainGubun"		    column="MAIN_GUBUN"			/>
+		<result property="mainGubunNm"			column="MAIN_GUBUN_NM"		/>
+		<result property="itemModel"		    column="ITEM_MODEL"			/>
+		<result property="itemModelNm"		    column="ITEM_MODEL_NM"		/>
+		<result property="itemUnit"		   		column="ITEM_UNIT"			/>
+		<result property="itemUnitNm"		   	column="ITEM_UNIT_NM"		/>
+		<result property="importCost"		    column="IMPORT_COST"		/>
+			
+		<result property="outCase"				column="OUT_CASE"			/>
+		<result property="statusCd"				column="STATUS_CD"			/> 
+		<result property="workOrdNo"			column="WORK_ORD_NO"		/> 
+		<result property="mainWorkChargr"		column="MAIN_WORK_CHARGR"	/> 
+		<result property="ordLotNo"		        column="ORD_LOT_NO"			/>
+		<result property="workOrdQty"		    column="WORK_ORD_QTY"		/>
+		<result property="inDate"				column="IN_DATE"	/> 
+		<result property="preOutWhsDate"		column="PRE_OUT_WHS_DATE"	/> 
+		<result property="preOutQty"			column="PRE_OUT_QTY"		/> 
+		<result property="preWorkCharger"		column="PRE_WORK_CHARGER"	/>
+		<result property="preWorkChargerNm"		column="PRE_WORK_CHARGER_NM"/>  
+		<result property="outWhsDate"			column="OUT_WHS_DATE"		/>
+		<result property="inQty"				column="IN_QTY"				/> 
+		<result property="outQty"				column="OUT_QTY"			/> 
+		<result property="outWorkCharger"		column="OUT_WORK_CHARGER"	/>
+		<result property="partReqNo"			column="PART_REQ_NO"		/> 
+		<result property="inWhsDesc"			column="IN_WHS_DESC"		/> 
+		<result property="regId"				column="REG_ID"				/>
+		<result property="regDate"				column="REG_DATE"			/>
+		<result property="updId"				column="UPD_ID"				/>				
+		<result property="updDate"				column="UPD_DATE"			/>
+		
+		
+		<result property="locationCd"			column="LOCATION_CD"		/>		
+		<result property="locationNm"			column="LOCATION_NM"		/>
+		<result property="areaCd"				column="AREA_CD"			/>		
+		<result property="areaNm"				column="AREA_NM"			/>
+		<result property="floorCd"				column="FLOOR_CD"			/>		
+		<result property="floorNm"				column="FLOOR_NM"			/>
+		<result property="locationNo"			column="LOCATION_NO"		/>
+		
+		<result property="remainQty"			column="REMAIN_QTY"			/> 
+		
+		<result property="itemConsumpt"			column="ITEM_CONSUMPT"		/>
+		<result property="totalConsumpt"		column="TOTAL_CONSUMPT"		/>
+		<result property="tmQty"				column="TM_QTY" 			/>
+		<result property="confirmYn"			column="CONFIRM_YN" 		/>
+		<result property="startDate"			column="START_DATE"			/>				
+		<result property="endDate"				column="END_DATE"			/>
+		<result property="value"				column="VALUE"				/>
+		<result property="diffQty"				column="DIFF_QTY"			/>
+		<result property="realQty"				column="REAL_QTY"			/>
+		<result property="realQtyOption"		column="REAL_QTY_OPTION"	/>
+		
+		<!-- 이전 데이터 -->
+		<result property="partCd"		  	  	column="PART_CD"			/>
+		<result property="partNm"		        column="PART_NM"			/>
+		<result property="partRev"		        column="PART_REV"			/>
+		<result property="partSpec"		  	  	column="PART_SPEC"			/>
+		<result property="partGubun"		    column="PART_GUBUN"			/>
+		<result property="partType"		   		column="PART_TYPE"			/>
+		<result property="partUnit"		  	  	column="PART_UNIT"			/>
+		<result property="partUnitNm"		  	column="PART_UNIT_NM"		/>
+		<result property="itemRev"		        column="ITEM_REV"			/>
+		<result property="partConsumpt"			column="PART_CONSUMPT"		/>
+		<result property="totalCount"			column="TOTAL_COUNT"		/>
+		
+		<!-- 추가사항 -->
+		<result property="outWorkerNm"			column="OUT_WORKER_NM"		/>
+		<result property="dealCorpCd"			column="DEAL_CORP_CD"		/>
+		<result property="dealCorpNm"			column="DEAL_CORP_NM"		/>
+		<result property="boxCount"				column="BOX_COUNT"			/>
+		<result property="preInWhsDate"			column="PRE_IN_WHS_DATE"	/>
+		<result property="preInWhsQty"			column="PRE_IN_WHS_QTY"		/>
+		<result property="needQty"				column="NEED_QTY"			/>
+		<result property="spQty"				column="SP_QTY"				/>
+		<result property="lackQty"				column="LACK_QTY"			/>
+		<result property="sourceNo"				column="SOURCE_NO"			/>
+		<result property="inputQty"				column="INPUT_QTY"			/>
+		<result property="outputQty"			column="OUTPUT_QTY"			/>
+		<result property="outLocationNo"		column="OUT_LOCATION_NO"	/>
+		<result property="outLocationCd"		column="OUT_LOCATION_CD"	/>
+		<result property="outLocationNm"		column="OUT_LOCATION_NM"	/>
+		<result property="outAreaNm"			column="OUT_AREA_NM"		/>
+		<result property="outGubunNm"			column="OUT_GUBUN_NM"		/>
+		<result property="inWhsCheck"			column="IN_WHS_CHECK"		/>
+		<result property="locNo"				column="LOC_NO"				/>
+		<result property="locCd"				column="LOC_CD"				/>
+		<result property="locNm"				column="LOC_NM"				/>
+		<result property="areaCdNm"				column="AREA_CD_NM"			/>
+		
+		<result property="outCorpLocNo"			column="OUT_CORP_LOC_NO"	/>
+		<result property="outCorpLocCd"			column="OUT_CORP_LOC_CD"	/>
+		<result property="outCorpAreaCd"		column="OUT_CORP_AREA_CD"	/>
+		<result property="outCorpAreaNm"		column="OUT_CORP_AREA_NM"	/>
+		
+
+		<result property="groupType"			column="GROUP_TYPE"			/>
+		<result property="groupTypeByD"			column="GROUP_TYPE_BY_D"	/>
+		<result property="groupTypeByM"			column="GROUP_TYPE_BY_M"	/>
+		<result property="itemCount"			column="ITEM_COUNT"			/>
+		<result property="inAdjustQty"			column="IN_ADJUST_QTY"		/>
+		<result property="workProgNo"			column="WORK_PROG_NO"		/>
+		<result property="workProgDate"			column="WORK_PROG_DATE"		/>
+		<result property="useQty"				column="USE_QTY"			/>
+		<result property="owaIdx"				column="OWA_IDX"			/>
+	</resultMap>
+	
+	<!-- 자재출고 목록조회 -->
+	<select id="outWhsAdmList" resultMap="OutWhsAdmVo">
+		SELECT
+			OWA_TB.IDX OWA_IDX
+			, OWA_TB.OUT_SLIP_NO
+			, OWA_TB.OUT_SLIP_SEQ
+			, OWA_TB.OUT_GUBUN
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '149' AND X.BASE_CD = OWA_TB.OUT_GUBUN) OUT_GUBUN_NM
+			, OWA_TB.LOT_NO
+			, OWA_TB.BARCODE_NO
+			, OWA_TB.ITEM_SEQ
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '079' AND X.BASE_CD = IIA_TB.ITEM_GUBUN) ITEM_GUBUN_NM
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND X.BASE_CD = IIA_TB.ITEM_MODEL) ITEM_MODEL_NM
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, OWA_TB.OUT_QTY
+			, OWA_TB.USE_QTY
+			, OWA_TB.OUT_WHS_DATE
+			, OWA_TB.OUT_WORKER
+			, (SELECT X.USER_NM FROM TB_USER X WHERE X.USER_NUMBER = OWA_TB.OUT_WORKER) OUT_WORKER_NM
+			, OWA_TB.LOCATION_NO
+			, OWA_TB.LOCATION_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '073' AND X.BASE_CD = OWA_TB.LOCATION_CD) LOCATION_NM
+			, OWA_TB.OUT_LOCATION_NO
+			, OWA_TB.OUT_LOCATION_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '073' AND X.BASE_CD = OWA_TB.OUT_LOCATION_CD) OUT_LOCATION_NM
+			, ISNULL(
+				(SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = LA_TB.AREA_CD AND X.BASE_GROUP_CD = '067')
+				, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = LA_TB.AREA_CD)
+			) OUT_AREA_NM
+			, OWA_TB.STATUS_CD
+			, OWA_TB.IN_WHS_DESC
+			, OWA_TB.REG_ID
+			, OWA_TB.REG_DATE
+			, OWA_TB.UPD_ID
+			, OWA_TB.UPD_DATE
+		FROM TB_OUT_WHS_ADM OWA_TB
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON OWA_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+		LEFT OUTER JOIN TB_LOCATION_ADM LA_TB
+		ON OWA_TB.OUT_LOCATION_NO = LA_TB.LOC_NO
+		WHERE 1=1
+		<if test="startDate != null and !startDate.equals('')">
+		AND OWA_TB.OUT_WHS_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="itemGubun != null and !itemGubun.equals('')">
+		AND IIA_TB.ITEM_GUBUN = #{itemGubun}
+		</if>
+		<if test="itemSeq != null and !itemSeq.equals('')">
+		AND IIA_TB.ITEM_SEQ = #{itemSeq}
+		</if>
+		<if test="outWhsDate != null and !outWhsDate.equals('')">
+		AND OWA_TB.OUT_WHS_DATE = #{outWhsDate}
+		</if>
+		<if test="outLocationNo != null and !outLocationNo.equals('')">
+		AND OWA_TB.OUT_LOCATION_NO = #{outLocationNo}
+		</if>
+		<if test="outGubun != null and !outGubun.equals('')">
+		AND OWA_TB.OUT_GUBUN = #{outGubun}
+		</if>
+		<if test="chkOutWhsAdmDelete != null and !chkOutWhsAdmDelete.equals('')">
+		AND OWA_TB.IDX IN ( ${owaIdxList} ) -- 체크된 데이터들
+		AND OWA_TB.USE_QTY > 0 -- 이 자재가 이미 사용되었는지 확인
+		</if>
+	</select>
+	
+	<!-- 자재출고(봉제) 부모테이블 목록조회 -->
+	<select id="outWhsAdmParentList" resultMap="OutWhsAdmVo">
+		SELECT	
+			IIA_TB.ITEM_SEQ
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND X.BASE_CD = IIA_TB.ITEM_MODEL) ITEM_MODEL_NM
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, OWA_TB.OUT_WHS_DATE
+			, SUM(CONVERT(FLOAT, OWA_TB.OUT_QTY)) OUT_QTY
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '073' AND X.BASE_CD = OWA_TB.OUT_LOCATION_CD) OUT_LOCATION_NM
+			, ISNULL(
+				(SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = LA_TB.AREA_CD AND X.BASE_GROUP_CD = '067')
+				, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = LA_TB.AREA_CD)
+			) OUT_AREA_NM
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '149' AND X.BASE_CD = OWA_TB.OUT_GUBUN) OUT_GUBUN_NM
+			, OWA_TB.OUT_LOCATION_NO
+			, OWA_TB.OUT_GUBUN
+		FROM TB_OUT_WHS_ADM OWA_TB
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON OWA_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+		LEFT OUTER JOIN TB_LOCATION_ADM LA_TB
+		ON OWA_TB.OUT_LOCATION_NO = LA_TB.LOC_NO
+		WHERE 1=1
+		<if test="startDate != null and !startDate.equals('')">
+		AND OWA_TB.OUT_WHS_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="itemGubun != null and !itemGubun.equals('')">
+		AND IIA_TB.ITEM_GUBUN = #{itemGubun}
+		</if>
+		GROUP BY
+			IIA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_MODEL
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, OWA_TB.OUT_WHS_DATE
+			, OWA_TB.OUT_LOCATION_CD
+			, LA_TB.AREA_CD
+			, OWA_TB.OUT_GUBUN
+			, OWA_TB.OUT_LOCATION_NO
+			, OWA_TB.OUT_GUBUN
+	</select>
+	
+	<!-- 자재출고 상세조회 -->
+	<select id="preOutWhsAdmRead" resultMap="OutWhsAdmVo">
+		SELECT 
+			I.MAIN_GUBUN,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=I.MAIN_GUBUN AND X.BASE_GROUP_CD='112') MAIN_GUBUN_NM,
+			I.ITEM_GUBUN,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=I.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM,
+			I.ITEM_MODEL,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=I.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM,
+			I.ITEM_CD,
+			I.ITEM_NM,
+			I.ITEM_UNIT,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=I.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM,
+			S.SP_DATE OUT_WHS_DATE,
+			S.SP_QTY OUT_QTY,
+			S.BARCODE_NO,
+			S.LOCATION_NO,
+			S.LOCATION_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=S.LOCATION_CD AND X.BASE_GROUP_CD='073') LOCATION_NM,
+			L.AREA_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=L.AREA_CD AND X.BASE_GROUP_CD='067') AREA_NM,
+			L.FLOOR_NM,
+			S.REG_ID,
+			M.WORK_ORD_NO,
+			(SELECT USER_NM FROM TB_USER WHERE USER_NUMBER=O.MAIN_WORK_CHARGR) MAIN_WORK_CHARGR
+		FROM TB_STOCK_PAYMENT_ADM S
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM I
+		ON S.SP_CD = I.ITEM_SEQ
+		LEFT OUTER JOIN TB_LOCATION_ADM L
+		ON S.LOCATION_NO=L.LOC_NO
+		INNER JOIN TB_WORK_ORDER_MATRL M
+		ON S.BARCODE_NO = M.BARCODE_NO
+		AND S.SP_DATE = M.MATRL_DATE 
+		LEFT OUTER JOIN TB_WORK_ORDER O
+		ON M.WORK_ORD_NO=O.WORK_ORD_NO
+		WHERE 1=1
+		AND SP_GUBUN='002'
+		AND SP_SUB_GUBUN='자재투입'
+		
+		<if test="mainGubun != null and !mainGubun.equals('')">
+		AND I.MAIN_GUBUN = #{mainGubun}
+		</if>
+		<if test="locationCd!=null and !locationCd.equals('')">
+		AND S.LOCATION_CD = #{locationCd}
+		</if>
+		<if test="locationCd==null or locationCd.equals('')">
+		AND S.LOCATION_CD IN (
+			SELECT BASE_CD FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD='073' AND X.BASE_NM LIKE '사출%' --사출 n호기 창고 조회
+		)
+		</if>
+		<if test="startDate!=null and !startDate.equals('')">
+		AND S.SP_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="workOrdNo!=null and !workOrdNo.equals('')">
+		AND M.WORK_ORD_NO = #{workOrdNo}
+		</if>
+		
+	</select>
+	
+	<!-- 자재출고현황(봉제) 바코드별 조회 -->
+	<select id="preOutWhsBarcList" resultMap="OutWhsAdmVo">
+		SELECT 
+			ITEM_MODEL_NM
+			, ITEM_SEQ
+			, ITEM_CD
+			, ITEM_NM
+			, ITEM_UNIT_NM
+			, ITEM_MODEL_NM
+			, LOCATION_NM
+			, OUT_WHS_DATE
+			, ISNULL(IN_QTY, 0) IN_QTY
+			, ISNULL(IN_ADJUST_QTY, 0) IN_ADJUST_QTY
+			, TOTAL_CONSUMPT
+			, ISNULL(OUT_QTY, 0)-ISNULL(OUT_CANCEL_QTY,0) OUT_QTY
+			, CONVERT(INT,ISNULL(TOTAL_CONSUMPT, ISNULL(IN_QTY, 0)))-CONVERT(INT,ISNULL(OUT_QTY, 0)-ISNULL(OUT_CANCEL_QTY,0)) REMAIN_QTY
+			, BARCODE_NO
+			, WORK_ORD_NO
+			, WORK_PROG_NO
+			, WORK_PROG_DATE
+		FROM (
+			SELECT
+				(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=T.LOCATION_CD AND X.BASE_GROUP_CD='073') LOCATION_NM
+				, (SELECT BASE_ABBR FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=T.LOCATION_CD AND X.BASE_GROUP_CD='073') LOC_ABBR
+				, T.SP_DATE OUT_WHS_DATE
+				, IIA_TB.ITEM_MODEL
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL_NM
+				, IIA_TB.ITEM_SEQ
+				, IIA_TB.ITEM_CD
+				, IIA_TB.ITEM_NM
+				, IIA_TB.ITEM_UNIT
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM
+				, T.BARCODE_NO
+				, WOM.WORK_ORD_NO
+				, (
+					SELECT SUM(SP_QTY) QTY
+					FROM TB_STOCK_PAYMENT_ADM
+					WHERE SP_GUBUN = '001'
+					AND LOCATION_CD = #{locationCd}
+					<if test="spSubGubun!=null and !spSubGubun.equals('')">
+					AND SP_SUB_GUBUN=#{spSubGubun}
+					</if>
+					AND BARCODE_NO=T.BARCODE_NO
+					GROUP BY BARCODE_NO
+				) IN_QTY
+				, (
+					SELECT SUM(SP_QTY) QTY
+					FROM TB_STOCK_PAYMENT_ADM
+					WHERE SP_GUBUN = '001'
+					AND SP_SUB_GUBUN='조정입고'
+					AND SP_DATE=T.SP_DATE
+					AND LOCATION_CD = #{locationCd}
+					AND BARCODE_NO=T.BARCODE_NO
+					GROUP BY BARCODE_NO
+				) IN_ADJUST_QTY
+				, (
+					SELECT SUM(SP_QTY) QTY
+					FROM TB_STOCK_PAYMENT_ADM
+					WHERE SP_GUBUN = '001'
+					AND SP_SUB_GUBUN='조정입고'
+					AND SP_DATE=T.SP_DATE
+					AND LOCATION_CD = #{locationCd}
+					AND BARCODE_NO=T.BARCODE_NO
+					AND SOURCE_NO=WOPG.WORK_PROG_NO
+					GROUP BY BARCODE_NO
+				) OUT_CANCEL_QTY
+				, (
+					SELECT TOTAL_CONSUMPT
+					FROM TB_WORK_ORDER_MATRL
+					WHERE WORK_ORD_NO = WOM.WORK_ORD_NO
+					AND MIDDLE_PRCSS_CD = WOM.MIDDLE_PRCSS_CD
+					AND BARCODE_NO = T.BARCODE_NO
+				) TOTAL_CONSUMPT
+				, SUM(T.OUT_QTY) OUT_QTY
+				, WOPG.WORK_PROG_NO
+				, WOPG.WORK_PROG_DATE
+			FROM (
+				SELECT 
+					SP_DATE
+					, SP_CD
+					, SP_SUB_GUBUN
+					, BARCODE_NO
+					, SOURCE_NO
+					, LOCATION_CD
+					, LOCATION_NO
+					, OUT_QTY
+				FROM (
+					SELECT
+						A.SP_DATE
+						, A.SP_CD
+						, A.SP_SUB_GUBUN
+						, A.BARCODE_NO
+						, (CASE WHEN A.SOURCE_NO='' THEN B.SOURCE_NO ELSE A.SOURCE_NO END) SOURCE_NO
+						, A.LOCATION_CD
+						, A.LOCATION_NO
+						, SUM(A.SP_QTY) OUT_QTY
+					FROM TB_STOCK_PAYMENT_ADM A
+					
+					LEFT OUTER JOIN (
+						SELECT
+							B.SM_DATE
+							, B.SM_CD
+							, B.SM_SUB_GUBUN
+							, B.BARCODE_NO
+							, A.MIDDLE_PRCSS_CD SOURCE_NO
+							, B.LOCATION_CD
+							, B.LOCATION_NO
+							, SUM(SM_QTY) OUT_QTY
+							, SUBSTRING(CONVERT(VARCHAR, B.REG_DATE, 120), 0, 17) REG_DATE
+						FROM TB_WORK_ORDER_PRCSS A
+						
+						LEFT OUTER JOIN TB_STOCK_MATRL_ADM B
+						ON A.ORD_LOT_NO=B.SOURCE_NO
+						
+						WHERE 1=1
+						AND SM_DATE BETWEEN #{startDate} AND #{endDate}
+						
+						GROUP BY
+							B.SM_DATE
+							, B.SM_CD
+							, B.SM_SUB_GUBUN
+							, B.BARCODE_NO
+							, B.LOCATION_CD
+							, B.LOCATION_NO
+							, A.MIDDLE_PRCSS_CD
+							, SUBSTRING(CONVERT(VARCHAR, B.REG_DATE, 120), 0, 17)
+							
+						HAVING 1=1
+						AND LOCATION_CD = #{locationCd}
+					) B
+					ON A.SP_DATE = B.SM_DATE
+					AND A.SP_CD = B.SM_CD
+					AND A.BARCODE_NO = B.BARCODE_NO
+					AND A.LOCATION_NO = B.LOCATION_NO
+					AND B.SOURCE_NO = (CASE WHEN A.SOURCE_NO!='' THEN A.SOURCE_NO ELSE B.SOURCE_NO END)
+					AND SUBSTRING(CONVERT(VARCHAR,A.REG_DATE,120),0,17) = B.REG_DATE
+					
+					WHERE 1=1
+					<if test="spSubGubun!=null and spSubGubun.equals('')">
+					AND SP_GUBUN='002'
+					</if>
+					<if test="spSubGubun!=null and !spSubGubun.equals('')">
+					AND SP_GUBUN='001'
+					</if>
+					AND SP_SUB_GUBUN = (CASE WHEN A.LOCATION_CD IN ('006','007') THEN SP_SUB_GUBUN ELSE '자재투입' END)
+					AND SP_DATE BETWEEN #{startDate} AND #{endDate}
+					
+					GROUP BY
+						A.SP_DATE
+						, A.SP_CD
+						, A.SP_SUB_GUBUN
+						, A.LOCATION_CD
+						, A.LOCATION_NO
+						, A.BARCODE_NO
+						, A.SOURCE_NO
+						, B.SOURCE_NO
+					
+					HAVING 1=1
+					AND A.LOCATION_CD = #{locationCd}
+					<if test="spSubGubun!=null and !spSubGubun.equals('')">
+					AND SP_SUB_GUBUN = #{spSubGubun}
+					</if>
+				) Z
+				WHERE 1=1
+				AND (Z.SOURCE_NO IS NOT NULL AND Z.SOURCE_NO !='')
+			) T
+			
+			LEFT OUTER JOIN TB_WORK_ORDER_MATRL WOM
+			ON T.SOURCE_NO = WOM.MIDDLE_PRCSS_CD
+			AND T.BARCODE_NO = WOM.BARCODE_NO
+			
+			LEFT OUTER JOIN TB_WORK_ORDER_PROGRESS WOPG
+			ON T.SOURCE_NO = WOPG.WORK_PROG_NO
+			
+			LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA_TB
+			ON T.SP_CD = IIA_TB.ITEM_SEQ
+			
+			WHERE 1=1
+			<if test="itemSeq!=null and !itemSeq.equals('')">
+			AND (ITEM_CD = #{itemSeq} OR ITEM_NM = #{itemSeq} OR IIA_TB.ITEM_SEQ = #{itemSeq})
+			</if>
+			<if test="workOrdNo!=null and !workOrdNo.equals('')">
+			AND WORK_ORD_NO = #{workOrdNo}
+			</if>
+			
+			GROUP BY
+				T.LOCATION_CD
+				, T.SP_DATE
+				, IIA_TB.ITEM_MODEL
+				, IIA_TB.ITEM_MODEL
+				, IIA_TB.ITEM_SEQ
+				, IIA_TB.ITEM_CD
+				, IIA_TB.ITEM_NM
+				, IIA_TB.ITEM_UNIT
+				, T.BARCODE_NO
+				, WOM.WORK_ORD_NO
+				, WOM.MIDDLE_PRCSS_CD
+				, WOPG.WORK_PROG_NO
+				, WOPG.WORK_PROG_DATE
+		) TT
+		
+		ORDER BY OUT_WHS_DATE ASC, ITEM_CD ASC, BARCODE_NO, TOTAL_CONSUMPT DESC
+	</select>
+	
+	<!-- 자재출고현황(봉제) 일자별 조회 -->
+	<select id="preOutWhsDateList" resultMap="OutWhsAdmVo">
+		SELECT 
+			(CASE WHEN SP_CD_G=1 THEN '합계' ELSE (CASE WHEN SP_DATE_G=1 THEN '소계' ELSE '기본' END) END) GROUP_TYPE,
+			ISNULL((SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=T.LOCATION_CD AND X.BASE_GROUP_CD='073'),'NONE') LOCATION_NM,
+			ISNULL(T.OUT_WHS_DATE,'NONE') OUT_WHS_DATE,
+			IIA_TB.ITEM_MODEL,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_MODEL AND X.BASE_GROUP_CD='099')ITEM_MODEL_NM,
+			IIA_TB.ITEM_SEQ,
+			IIA_TB.ITEM_CD,
+			IIA_TB.ITEM_NM,
+			IIA_TB.ITEM_UNIT,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_UNIT AND X.BASE_GROUP_CD='036')ITEM_UNIT_NM,
+			T.OUT_QTY
+		FROM(
+			SELECT 
+				SP_DATE OUT_WHS_DATE,
+				SP_CD ITEM_SEQ,
+				LOCATION_CD,
+				SUM(SP_QTY) OUT_QTY,
+				GROUPING(SP_CD) SP_CD_G,
+				GROUPING(SP_DATE) SP_DATE_G,
+				GROUPING(LOCATION_CD) LOCATION_CD_G
+			FROM TB_STOCK_PAYMENT_ADM A
+			WHERE 1=1
+			AND SP_GUBUN='002'
+			AND SP_SUB_GUBUN= (CASE WHEN A.LOCATION_CD IN ('006','007') THEN SP_SUB_GUBUN ELSE '자재투입' END)
+			AND SP_DATE BETWEEN #{startDate} AND #{endDate}
+			AND LOCATION_CD=#{locationCd}
+
+			GROUP BY ROLLUP(SP_CD,LOCATION_CD,SP_DATE)
+			HAVING 1=1
+			
+			AND GROUPING(SP_CD)=0
+			AND GROUPING(LOCATION_CD)=0 
+			AND GROUPING(SP_DATE)=0 
+
+			<!-- 품목별 소계  -->
+			<if test="groupTypeByD != null">
+				<if test="groupTypeByD eq 'Y'.toString()">
+					OR (GROUPING(SP_CD)=0
+					AND GROUPING(LOCATION_CD)=1 
+					AND GROUPING(SP_DATE)=1
+					)
+				</if>
+			</if>
+			<!-- 합계  -->
+			<if test="groupTypeByM != null">
+				<if test="groupTypeByM eq 'Y'.toString()">
+					OR (GROUPING(SP_CD)=1
+					AND GROUPING(LOCATION_CD)=1 
+					AND GROUPING(SP_DATE)=1
+					)
+				</if>
+			</if>	
+		)T
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON T.ITEM_SEQ=IIA_TB.ITEM_SEQ
+		WHERE 1=1
+		
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+		AND (ITEM_CD = #{itemSeq} OR ITEM_NM = #{itemSeq} OR IIA_TB.ITEM_SEQ = #{itemSeq})
+		</if>
+		
+		<if test="groupTypeByD eq 'Y'.toString() or groupTypeByM eq 'Y'.toString() ">
+		ORDER BY IIA_TB.ITEM_CD DESC,GROUP_TYPE ASC
+		</if>
+		<if test="groupTypeByD eq 'N'.toString() and groupTypeByM eq 'N'.toString()">
+		ORDER BY OUT_WHS_DATE ASC
+		</if>
+	</select>
+	
+	<!-- 자재출고현황(봉제) 월별 조회 -->
+	<select id="preOutWhsItemList" resultMap="OutWhsAdmVo">
+		SELECT 
+			(CASE WHEN SP_CD_G=1 THEN '합계' ELSE (CASE WHEN SP_DATE_G=1 THEN '소계' ELSE '기본' END) END) GROUP_TYPE,
+			ISNULL((SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=T.LOCATION_CD AND X.BASE_GROUP_CD='073'),'NONE') LOCATION_NM,
+			ISNULL(T.OUT_WHS_DATE,'NONE') OUT_WHS_DATE,
+			IIA_TB.ITEM_MODEL,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_MODEL AND X.BASE_GROUP_CD='099')ITEM_MODEL_NM,
+			IIA_TB.ITEM_SEQ,
+			IIA_TB.ITEM_CD,
+			IIA_TB.ITEM_NM,
+			IIA_TB.ITEM_UNIT,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA_TB.ITEM_UNIT AND X.BASE_GROUP_CD='036')ITEM_UNIT_NM,
+			OUT_QTY
+		FROM(
+		SELECT 
+			SUBSTRING(SP_DATE,0,7) OUT_WHS_DATE,
+			SP_CD ITEM_SEQ,
+			LOCATION_CD,
+			SUM(SP_QTY) OUT_QTY,
+			GROUPING(SP_CD) SP_CD_G,
+			GROUPING(SUBSTRING(SP_DATE,0,7)) SP_DATE_G,
+			GROUPING(LOCATION_CD) LOCATION_CD_G
+		FROM TB_STOCK_PAYMENT_ADM A
+		WHERE 1=1
+		AND SP_GUBUN='002'
+		AND SP_SUB_GUBUN= (CASE WHEN A.LOCATION_CD IN ('006','007') THEN SP_SUB_GUBUN ELSE '자재투입' END)
+		AND SUBSTRING(SP_DATE,0,7) BETWEEN #{startDate} AND #{endDate}
+		AND LOCATION_CD=#{locationCd}
+		GROUP BY ROLLUP(SP_CD,LOCATION_CD,SUBSTRING(SP_DATE,0,7))
+
+		HAVING 1=1
+		AND GROUPING(SP_CD)=0
+		AND GROUPING(LOCATION_CD)=0 
+		AND GROUPING(SUBSTRING(SP_DATE,0,7))=0 
+			<!-- 품목별 소계  -->
+			<if test="groupTypeByD != null">
+				<if test="groupTypeByD eq 'Y'.toString()">
+					OR (GROUPING(SP_CD)=0
+					AND GROUPING(LOCATION_CD)=1 
+					AND GROUPING(SUBSTRING(SP_DATE,0,7))=1
+					)
+			</if>
+			</if>
+			<!-- 합계  -->
+			<if test="groupTypeByM != null">
+				<if test="groupTypeByM eq 'Y'.toString()">
+					OR (GROUPING(SP_CD)=1
+					AND GROUPING(LOCATION_CD)=1 
+					AND GROUPING(SUBSTRING(SP_DATE,0,7))=1
+					)
+				</if>
+			</if>	
+		)T
+		LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON T.ITEM_SEQ=IIA_TB.ITEM_SEQ
+		WHERE 1=1
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+		AND (ITEM_CD = #{itemSeq} OR ITEM_NM = #{itemSeq} OR IIA_TB.ITEM_SEQ = #{itemSeq})
+		</if>
+		
+		<if test="groupTypeByD eq 'Y'.toString() or groupTypeByM eq 'Y'.toString() ">
+		ORDER BY IIA_TB.ITEM_CD DESC,GROUP_TYPE ASC
+		</if>
+		<if test="groupTypeByD eq 'N'.toString() and groupTypeByM eq 'N'.toString()">
+		ORDER BY OUT_WHS_DATE ASC
+		</if>
+	</select>
+	
+	<!--출고수량과 총소료량 비교 조회 -->
+	<select id="compareConsumptPreOutQty" resultMap="OutWhsAdmVo">
+		<![CDATA[
+			SELECT 
+				A.PART_CD,
+				A.PART_REV,
+				A.PRE_OUT_QTY,
+				B.TOTAL_CONSUMPT,
+				(CASE WHEN A.PRE_OUT_QTY >= B.TOTAL_CONSUMPT THEN 'Y' ELSE 'N' END) DIFF_QTY
+			FROM 
+			
+			(
+				SELECT PART_CD,
+					PART_REV,
+					SUM(PRE_OUT_QTY) PRE_OUT_QTY
+				FROM TB_OUT_WHS_ADM 
+				WHERE WORK_ORD_NO=#{workOrdNo}
+				GROUP BY PART_CD , PART_REV
+			) A
+			INNER JOIN 
+			(
+				SELECT PART_CD,
+					PART_REV,
+					SUM(PART_CONSUMPT)*#{workOrdQty} TOTAL_CONSUMPT
+				FROM TB_ITEM_MOTOR_EBOM
+				WHERE ITEM_CD = #{itemCd}
+				AND ITEM_REV=#{itemRev}
+				GROUP BY PART_CD, PART_REV
+			) B
+			ON A.PART_CD=B.PART_CD
+			AND A.PART_REV=B.PART_REV
+
+		]]>
+	</select>
+	
+	<!-- 자재출고 등록 -->
+	<insert id="preOutWhsAdmCreate">
+		INSERT INTO TB_OUT_WHS_ADM(
+			OUT_SLIP_NO,
+			OUT_SLIP_SEQ,
+			OUT_GUBUN,
+			LOT_NO,
+			BARCODE_NO,
+			ITEM_SEQ,
+			OUT_QTY,
+			USE_QTY,
+			OUT_WHS_DATE,
+			OUT_WORKER,
+			LOCATION_NO,
+			LOCATION_CD,
+			OUT_LOCATION_NO,
+			OUT_LOCATION_CD,
+			STATUS_CD,
+			IN_WHS_DESC,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{outSlipNo},
+			#{outSlipSeq},
+			#{outGubun},
+			#{lotNo},
+			#{barcodeNo},
+			#{itemSeq},
+			#{outQty},
+			#{useQty},
+			#{outWhsDate},
+			#{outWorker},
+			#{locationNo},
+			#{locationCd},
+			#{outLocationNo},
+			#{outLocationCd},
+			#{statusCd},
+			#{inWhsDesc},
+			#{regId},
+			getDate()
+		)
+	</insert>
+	
+	<!-- 자재출고 사용수량 수정 (외주입고 시) -->
+	<update id="updateUseqtyPlus">
+		UPDATE TB_OUT_WHS_ADM
+		SET USE_QTY = SUB_TB.SET_USE_QTY
+		FROM (
+			SELECT * FROM (
+				SELECT
+					CD.IDX,
+					CD.ITEM_SEQ,
+					CD.OUT_LOCATION_NO,
+					CD.ITEM_CONSUMPT,
+					CD.NEED_QTY,
+					CD.OUT_QTY,
+					CD.USE_QTY,
+					CD.REAL_QTY,
+					CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0) AS REMAIN_REAL_QTY, -- NEED_QTY에 REAL_QTY를 계속 빼서 필요한 자재를 구함
+					CASE WHEN
+						(CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0)) <![CDATA[<=]]> 0
+						THEN CD.USE_QTY + CD.REAL_QTY + (CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0))
+						ELSE CD.OUT_QTY
+					END AS SET_USE_QTY --수정해야 할 사용수량
+				FROM (
+					SELECT
+						OWA_TB.IDX,
+						OWA_TB.ITEM_SEQ,
+						OWA_TB.OUT_LOCATION_NO,
+						IME_TB.ITEM_CONSUMPT,
+						OWA_TB.OUT_QTY,
+						OWA_TB.USE_QTY,
+						CAST(OWA_TB.OUT_QTY AS FLOAT) - CAST(OWA_TB.USE_QTY AS FLOAT) AS REAL_QTY,
+						CAST(#{inQty} AS FLOAT) * CAST(IME_TB.ITEM_CONSUMPT AS FLOAT) AS NEED_QTY, --반제품 수량 * 소요량
+						ROW_NUMBER() OVER (PARTITION BY OWA_TB.ITEM_SEQ ORDER BY OWA_TB.IDX) AS RowNum --ITEM_SEQ별, 등록순 대로 수정할 데이터 확인
+					FROM TB_ITEM_MOTOR_EBOM IME_TB
+					INNER JOIN TB_OUT_WHS_ADM OWA_TB
+					ON IME_TB.ITEM_SEQ = OWA_TB.ITEM_SEQ
+					WHERE IME_TB.UPPER_ITEM_SEQ = #{itemSeq} --LVL 1단계 자재만 조회
+					AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+					AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+					AND CAST(OWA_TB.OUT_QTY AS FLOAT) > CAST(OWA_TB.USE_QTY AS FLOAT) --다 사용된 자재 제외
+				) AS CD
+			) A
+			WHERE A.SET_USE_QTY > 0 --수정할 사용수량이 있는 것만 조회
+		) SUB_TB
+		WHERE TB_OUT_WHS_ADM.IDX = SUB_TB.IDX
+	</update>
+	
+	<!-- 자재출고 사용수량 수정 (반출등록 시) -->
+	<update id="updateToffUseqtyPlus">
+		UPDATE TB_OUT_WHS_ADM
+		SET USE_QTY = SUB_TB.SET_USE_QTY
+		FROM (
+			SELECT * FROM (
+				SELECT
+					CD.IDX,
+					CD.ITEM_SEQ,
+					CD.OUT_LOCATION_NO,
+					CD.NEED_QTY,
+					CD.OUT_QTY,
+					CD.USE_QTY,
+					CD.REAL_QTY,
+					CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0) AS REMAIN_REAL_QTY, -- NEED_QTY에 REAL_QTY를 계속 빼서 필요한 자재를 구함
+					CASE WHEN
+						(CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0)) <![CDATA[<=]]> 0
+						THEN CD.USE_QTY + CD.REAL_QTY + (CD.NEED_QTY - COALESCE(SUM(CD.REAL_QTY) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0))
+						ELSE CD.OUT_QTY
+					END AS SET_USE_QTY --수정해야 할 사용수량
+				FROM (
+					SELECT
+						OWA_TB.IDX,
+						OWA_TB.ITEM_SEQ,
+						OWA_TB.OUT_LOCATION_NO,
+						OWA_TB.OUT_QTY,
+						OWA_TB.USE_QTY,
+						CAST(OWA_TB.OUT_QTY AS FLOAT) - CAST(OWA_TB.USE_QTY AS FLOAT) AS REAL_QTY,
+						CAST(#{inQty} AS FLOAT) AS NEED_QTY, --반제품 수량 * 소요량
+						ROW_NUMBER() OVER (PARTITION BY OWA_TB.ITEM_SEQ ORDER BY OWA_TB.IDX) AS RowNum --ITEM_SEQ별, 등록순 대로 수정할 데이터 확인
+					FROM TB_OUT_WHS_ADM OWA_TB
+					WHERE OWA_TB.ITEM_SEQ = #{itemSeq} --품목 시퀀스
+					AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+					AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+					AND CAST(OWA_TB.OUT_QTY AS FLOAT) > CAST(OWA_TB.USE_QTY AS FLOAT) --다 사용된 자재 제외
+				) AS CD
+			) A
+			WHERE A.SET_USE_QTY > 0 --수정할 사용수량이 있는 것만 조회
+		) SUB_TB
+		WHERE TB_OUT_WHS_ADM.IDX = SUB_TB.IDX
+	</update>
+	
+	<!-- 자재출고 사용수량 수정 (외주입고 취소) -->
+	<update id="updateUseqtyMinus">
+		UPDATE TB_OUT_WHS_ADM
+		SET USE_QTY = SUB_TB.SET_USE_QTY
+		FROM (
+			SELECT * FROM (
+				SELECT
+					CD.IDX,
+					CD.ITEM_SEQ,
+					CD.OUT_LOCATION_NO,
+					CD.ITEM_CONSUMPT,
+					CD.NEED_QTY,
+					CD.OUT_QTY,
+					CD.USE_QTY,
+					CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0) AS REMAIN_REAL_QTY, -- NEED_QTY에 USE_QTY를 계속 빼서 취소할 자재를 구함
+					CASE WHEN
+						(CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0)) <![CDATA[<]]> 0
+						THEN -1 * (CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0))
+						ELSE 0
+					END AS SET_USE_QTY --수정해야 할 사용수량
+				FROM (
+					SELECT
+						OWA_TB.IDX,
+						OWA_TB.ITEM_SEQ,
+						OWA_TB.OUT_LOCATION_NO,
+						IME_TB.ITEM_CONSUMPT,
+						OWA_TB.OUT_QTY,
+						OWA_TB.USE_QTY,
+						CAST(#{inQty} AS FLOAT) * CAST(IME_TB.ITEM_CONSUMPT AS FLOAT) AS NEED_QTY, --반제품 수량 * 소요량
+						ROW_NUMBER() OVER (PARTITION BY OWA_TB.ITEM_SEQ ORDER BY OWA_TB.IDX DESC) AS RowNum --ITEM_SEQ별, 등록순 대로 수정할 데이터 확인
+					FROM TB_ITEM_MOTOR_EBOM IME_TB
+					INNER JOIN TB_OUT_WHS_ADM OWA_TB
+					ON IME_TB.ITEM_SEQ = OWA_TB.ITEM_SEQ
+					WHERE IME_TB.UPPER_ITEM_SEQ = #{itemSeq} --LVL 1단계 자재만 조회
+					AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+					AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+					AND OWA_TB.USE_QTY > 0 --하나라도 사용된 자재만 조회
+				) AS CD
+			) A
+			WHERE CAST(A.SET_USE_QTY AS FLOAT) <![CDATA[<]]> CAST(OUT_QTY AS FLOAT) -- 수정해야 할 항목만 조회
+		) SUB_TB
+		WHERE TB_OUT_WHS_ADM.IDX = SUB_TB.IDX
+	</update>
+	
+	<!-- 자재출고 사용수량 수정 (반출등록 취소) -->
+	<update id="updateToffUseqtyMinus">
+		UPDATE TB_OUT_WHS_ADM
+		SET USE_QTY = SUB_TB.SET_USE_QTY
+		FROM (
+			SELECT * FROM (
+				SELECT
+					CD.IDX,
+					CD.ITEM_SEQ,
+					CD.OUT_LOCATION_NO,
+					CD.NEED_QTY,
+					CD.OUT_QTY,
+					CD.USE_QTY,
+					CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0) AS REMAIN_REAL_QTY, -- NEED_QTY에 USE_QTY를 계속 빼서 취소할 자재를 구함
+					CASE WHEN
+						(CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0)) <![CDATA[<]]> 0
+						THEN -1 * (CD.NEED_QTY - COALESCE(SUM(CAST(CD.USE_QTY AS FLOAT)) OVER (PARTITION BY CD.ITEM_SEQ ORDER BY CD.RowNum), 0))
+						ELSE 0
+					END AS SET_USE_QTY --수정해야 할 사용수량
+				FROM (
+					SELECT
+						OWA_TB.IDX,
+						OWA_TB.ITEM_SEQ,
+						OWA_TB.OUT_LOCATION_NO,
+						OWA_TB.OUT_QTY,
+						OWA_TB.USE_QTY,
+						CAST(#{inQty} AS FLOAT) AS NEED_QTY, --반제품 수량 * 소요량
+						ROW_NUMBER() OVER (PARTITION BY OWA_TB.ITEM_SEQ ORDER BY OWA_TB.IDX DESC) AS RowNum --ITEM_SEQ별, 등록순 대로 수정할 데이터 확인
+					FROM TB_OUT_WHS_ADM OWA_TB
+					WHERE OWA_TB.ITEM_SEQ = #{itemSeq} --품목 시퀀스
+					AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+					AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+					AND OWA_TB.USE_QTY > 0 --하나라도 사용된 자재만 조회
+				) AS CD
+			) A
+			WHERE CAST(A.SET_USE_QTY AS FLOAT) <![CDATA[<]]> CAST(OUT_QTY AS FLOAT) -- 수정해야 할 항목만 조회
+		) SUB_TB
+		WHERE TB_OUT_WHS_ADM.IDX = SUB_TB.IDX
+	</update>
+	
+	<!-- 자재출고 출고수량 수정-->
+	<update id="updatePreOutQty">
+		UPDATE TB_OUT_WHS_ADM 
+		<set>
+			<if test="preOutQty!=null and !preOutQty.equals('')">
+			 PRE_OUT_QTY = PRE_OUT_QTY + #{preOutQty} , 
+			</if>
+			<if test="partReqNo!=null and !partReqNo.equals('')">
+			 PART_REQ_NO = PART_REQ_NO + ',' + #{partReqNo} ,
+			</if>
+			UPD_ID = #{updId},
+			UPD_DATE = GETDATE()
+		</set>
+		WHERE BARCODE_NO = #{barcodeNo}
+	</update>
+	
+		
+	<!-- 자재출고 출고수량 수정-->
+	<update id="updateConfirmYn">
+		UPDATE TB_OUT_WHS_ADM 
+		SET 
+			CONFIRM_YN = #{confirmYn}, 
+			UPD_ID = #{updId},
+			UPD_DATE = GETDATE()
+		WHERE WORK_ORD_NO = #{workOrdNo}
+	</update>
+	
+	<!-- 자재출고 출고전표 생성 -->
+	<select id="getOutSlipNo" resultType="String">
+		SELECT ISNULL(RIGHT('000' + CAST(MAX(RIGHT(OUT_SLIP_NO, 3))+1 AS NVARCHAR), 3), '001')
+		FROM TB_OUT_WHS_ADM
+		WHERE SUBSTRING(OUT_SLIP_NO, 1, 8) = #{today}
+	</select>
+	
+	<!-- 자재출고 출고전표시퀀스 생성 -->
+	<select id="getOutSlipSeq" resultType="String">
+		SELECT ISNULL(MAX(OUT_SLIP_SEQ)+1, 0)
+		FROM TB_OUT_WHS_ADM
+		WHERE OUT_SLIP_NO = #{outSlipNo}
+	</select>
+	
+	<!--  입출고관리 남은수량 값 수정-->
+	<update id="updateRemainQty">
+		UPDATE TB_IN_OUT_WHS_ADM
+		SET REMAIN_QTY = REMAIN_QTY - #{preOutQty}
+		WHERE BARCODE_NO = #{barcodeNo}
+	</update>
+	
+	<!-- 작지번호에 해당하는 바코드인지 여부확인 -->
+	<select id="checkBarcodeNo" resultType="Integer">
+		SELECT COUNT(*) FROM TB_ITEM_MOTOR_EBOM A , TB_ITEM_PART_ADM B
+		WHERE A.PART_CD=B.PART_CD
+		AND A.PART_REV=B.PART_REV
+		AND A.ITEM_CD=#{itemCd}
+		AND A.ITEM_REV=#{itemRev} 
+		<if test="partCd!=null and !partCd.equals('')">
+		AND A.PART_CD=#{partCd} 
+		AND A.PART_REV=#{partRev}
+		</if>
+		<if test="partGubun!=null and !partGubun.equals('')">
+		AND B.PART_GUBUN NOT IN (#{partGubun})
+		</if>
+	</select>
+	
+
+	<!--작지에 해당하는 품번 소모량 값 가져오기 -->
+	<select id="getConsumpt" resultType="float">
+		SELECT 
+			ISNULL(IME_TB.ITEM_CONSUMPT,0)
+		FROM TB_ITEM_MOTOR_EBOM IME_TB
+		WHERE 1=1
+		AND IME_TB.ITEM_SEQ = #{itemSeq}
+		AND IME_TB.UPPER_ITEM_SEQ = #{upperItemSeq}
+	</select>
+	
+	<!-- 자재출고현황 작지번호 모달조회-->
+	<select id="workOrdNoList" resultMap="OutWhsAdmVo">
+		SELECT 
+			DISTINCT(A.WORK_ORD_NO)
+			, B.ITEM_SEQ
+			, B.ITEM_GUBUN
+			, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = B.ITEM_GUBUN AND X.BASE_GROUP_CD='037') ITEM_GUBUN
+			, (SELECT ITEM_NM FROM TB_ITEM_MOTOR_ADM X WHERE X.ITEM_SEQ = B.ITEM_SEQ) ITEM_NM
+			, B.ORD_LOT_NO
+			, B.WORK_ORD_QTY
+		FROM TB_OUT_WHS_ADM A, TB_WORK_ORDER B
+		WHERE 1=1
+		AND A.WORK_ORD_NO = B.WORK_ORD_NO
+	</select>
+	
+	<!-- 작업지시 자재투입 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+	
+	<!-- barcode No 존재 확인 -->
+	<select id="barcodeExsitCheck" resultType="Integer">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM TB_OUT_WHS_ADM A
+			WHERE 1=1
+			AND A.BARCODE_NO = #{barcodeNo}
+		]]>
+	</select>
+	
+	<!-- barcode No 자재출고인지 개별출고인지 확인 -->
+	<select id="barcodeStatusCheck" resultType="String">
+		<![CDATA[
+			SELECT
+				DISTINCT(OUT_CASE)
+			FROM TB_OUT_WHS_ADM A
+			WHERE 1=1
+			AND A.BARCODE_NO = #{barcodeNo}
+		]]>
+	</select>
+	
+	<!-- 작지번호에 투입되는 자재가 맞는지 확인 -->
+	<select id="barcodeWorkordNoCheck" resultType="Integer">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM TB_OUT_WHS_ADM A
+			WHERE 1=1
+			AND A.WORK_ORD_NO = #{workOrdNo}
+			AND A.BARCODE_NO = #{barcodeNo}
+		]]>
+	</select>
+	
+		
+	<!-- barcode No 투입유무 확인 -->
+	<select id="barcodeOutStatusCheck" resultType="String">
+		<![CDATA[
+			SELECT
+				STATUS_CD
+			FROM TB_OUT_WHS_ADM A
+			WHERE 1=1
+			AND A.BARCODE_NO = #{barcodeNo}
+		]]>
+	</select>
+	
+	
+	<!-- 해당 공정에 투입되는 자재가 맞는지 확인 -->
+	<select id="barcodePrcssCdCheck" resultType="Integer">
+		<![CDATA[
+			SELECT
+				COUNT(*)
+			FROM TB_WORK_ORDER A, TB_ITEM_BOM_MAP B
+			WHERE 1=1
+			AND A.WORK_ORD_NO = #{workOrdNo}
+			AND A.ITEM_CD = B.ITEM_CD
+			ANd A.ITEM_REV = B.ITEM_REV
+			AND B.PRCSS_CD = #{minorPrcssCd}
+			AND B.PART_CD = #{partCd}
+			ANd B.PART_REV = #{partRev}
+		]]>
+	</select>
+	
+	<!-- 자재투입 barcode Scan -->
+	<select id="barcodeNoScan" resultMap="OutWhsAdmVo">
+		SELECT
+			A.PO_NO,
+			A.PO_SEQ,
+			A.IN_SEQ,
+			A.OUT_SEQ,
+			A.OUT_CASE,
+			A.BARCODE_NO,
+			A.WORK_ORD_NO,
+			A.ITEM_SEQ,
+			(SELECT ITEM_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=A.ITEM_SEQ) ITEM_GUBUN,
+			ISNULL(A.PRE_OUT_QTY,0) PRE_OUT_QTY,
+			ISNULL(A.OUT_QTY,0) OUT_QTY,
+			LOCATION_CD,
+			AREA_CD,
+			FLOOR_CD,
+			LOCATION_NO
+		FROM TB_OUT_WHS_ADM A
+		WHERE 1=1
+		AND A.BARCODE_NO = #{barcodeNo}
+		AND LOCATION_NO = #{locationNo}
+	</select>
+	
+	<!-- 자재투입 자재 출고처리 -->
+	<update id="outWhsOutQtyEdit" parameterType="mes.domain.io.OutWhsAdmVo">
+		UPDATE TB_OUT_WHS_ADM
+		SET
+			OUT_WHS_DATE = #{outWhsDate},
+			OUT_QTY = ISNULL(OUT_QTY,'0') + #{outQty},
+			OUT_WORK_CHARGER = #{outWorkCharger},
+			STATUS_CD = 'P'
+		WHERE 1=1
+		AND PO_NO = #{poNo}
+		AND PO_SEQ = #{poSeq}
+		AND IN_SEQ = #{inSeq}
+		AND OUT_SEQ = #{outSeq}
+		
+		
+	</update>
+	
+	<!-- 수주상세별 출고 모니터링 조회 -->
+	<select id="outMonitoringList" resultMap="OutWhsAdmVo">
+		SELECT
+			A.PART_CD,
+			A.PART_REV,
+			B.PART_NM,
+			B.PART_SPEC,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=B.PART_UNIT AND X.BASE_GROUP_CD='036') PART_UNIT,
+			A.PRE_OUT_WHS_DATE,
+			A.PRE_OUT_QTY,
+			A.STATUS_CD,
+			A.BARCODE_NO,
+			(SELECT X.USER_NM FROM TB_USER X WHERE X.USER_NUMBER=A.PRE_WORK_CHARGER) PRE_WORK_CHARGER
+		FROM TB_OUT_WHS_ADM A, TB_ITEM_PART_ADM B
+		WHERE 1=1
+		AND A.PART_CD=B.PART_CD
+		AND A.PART_REV=B.PART_REV 
+		AND A.WORK_ORD_NO = #{workOrdNo}
+	</select>
+	
+	
+	<!-- 수불관리 부품 바코드 상세조회 -->
+	<select id="itemPartRead" resultMap="OutWhsAdmVo">
+		SELECT
+			Z.BARCODE_NO,
+			Z.SP_CD ITEM_SEQ,
+			(SELECT ITEM_CD FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_CD,
+			(SELECT ITEM_NM FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM WHERE BASE_CD = (SELECT ITEM_MODEL FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD) AND BASE_GROUP_CD='099') ITEM_MODEL,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM  WHERE BASE_CD = (SELECT ITEM_UNIT FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD) AND BASE_GROUP_CD = '036') ITEM_UNIT,
+			(SELECT IMPORT_COST FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)IMPORT_COST,
+			(SELECT ITEM_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_GUBUN,
+			(SELECT ITEM_FIFO_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_FIFO_GUBUN,
+			ISNULL(A.QTY,0) IN_QTY,
+			ISNULL(B.QTY,0) OUT_QTY,
+<!-- 			ISNULL(D.QTY,0) ADJ_IN_QTY, -->
+<!-- 			ISNULL(E.QTY,0) ADJ_OUT_QTY, -->
+			(ISNULL(A.QTY,0))-ISNULL(B.QTY,0) REMAIN_QTY,
+<!-- 			(ISNULL(A.QTY,0)+ISNULL(D.QTY,0))-ISNULL(B.QTY,0)-ISNULL(E.QTY,0) REMAIN_QTY, -->
+			0 PRE_OUT_QTY,
+			Z.LOCATION_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=Z.LOCATION_CD AND X.BASE_GROUP_CD='073')LOCATION_NM,
+			Z.AREA_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=Z.AREA_CD AND X.BASE_GROUP_CD='067')AREA_NM,
+			Z.FLOOR_CD,
+			Z.FLOOR_CD FLOOR_NM,
+			Z.LOCATION_NO,
+			(CASE WHEN A.SP_DATE IS NULL THEN A.SP_DATE ELSE A.SP_DATE END) IN_DATE
+		FROM 
+			(
+			SELECT 
+				SP_TYPE,
+				SP_CD,
+				BARCODE_NO,
+				LOCATION_CD,
+				AREA_CD,
+				FLOOR_CD,
+				LOCATION_NO
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND BARCODE_NO = #{barcodeNo}
+			AND SP_GUBUN = '001'
+			AND (SP_SUB_GUBUN = '초기재고' or SP_SUB_GUBUN =  '자재입고')
+			AND LOCATION_CD = #{locationCd}
+			GROUP BY SP_TYPE,SP_CD,BARCODE_NO,LOCATION_CD,AREA_CD,FLOOR_CD,LOCATION_NO
+		) Z
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				SP_CD,
+				SUM(SP_QTY) QTY,
+				SP_DATE
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND BARCODE_NO = #{barcodeNo}
+			AND SP_GUBUN='001'
+			AND (SP_SUB_GUBUN = '초기재고' or SP_SUB_GUBUN =  '자재입고')
+			AND LOCATION_CD = #{locationCd}
+			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,SP_DATE
+		) A
+		ON Z.SP_CD=A.SP_CD
+	
+		LEFT OUTER JOIN 
+		(
+			SELECT
+				SP_CD,
+				
+				SUM(SP_QTY) QTY
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND BARCODE_NO = #{barcodeNo}
+			AND SP_GUBUN='002'
+			AND SP_SUB_GUBUN = '자재투입'
+			AND (LOCATION_CD = '003' or LOCATION_CD = '004')
+			GROUP BY SP_TYPE,SP_CD,SP_GUBUN 
+		) B
+		ON Z.SP_CD=B.SP_CD
+<!-- 		LEFT OUTER JOIN  -->
+<!-- 		( -->
+<!-- 			SELECT  -->
+<!-- 				SP_CD, -->
+<!-- 				SUM(SP_QTY) QTY, -->
+<!-- 				SP_DATE -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='003' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,SP_DATE  -->
+<!-- 		) D -->
+<!-- 		ON Z.SP_CD=D.SP_CD -->
+	
+<!-- 		LEFT OUTER JOIN  -->
+<!-- 		( -->
+<!-- 			SELECT  -->
+<!-- 				SP_CD, -->
+<!-- 				SUM(SP_QTY) QTY -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='004' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN  -->
+<!-- 		) E -->
+<!-- 		ON Z.SP_CD=E.SP_CD -->
+		
+<!-- 		SELECT -->
+<!-- 			Z.BARCODE_NO, -->
+<!-- 			Z.SP_CD ITEM_SEQ, -->
+<!-- 			(SELECT ITEM_CD FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_CD, -->
+<!-- 			(SELECT ITEM_NM FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_NM, -->
+<!-- 			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM WHERE BASE_CD = (SELECT ITEM_MODEL FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD) AND BASE_GROUP_CD='099') ITEM_MODEL, -->
+<!-- 			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM  WHERE BASE_CD = (SELECT ITEM_UNIT FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD) AND BASE_GROUP_CD = '036') ITEM_UNIT, -->
+<!-- 			(SELECT IMPORT_COST FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)IMPORT_COST, -->
+<!-- 			(SELECT ITEM_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_GUBUN, -->
+<!-- 			(SELECT ITEM_FIFO_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=Z.SP_CD)ITEM_FIFO_GUBUN, -->
+<!-- 			ISNULL(A.QTY,0) IN_QTY, -->
+<!-- 			ISNULL(B.QTY,0) OUT_QTY, -->
+<!-- 			ISNULL(D.QTY,0) ADJ_IN_QTY, -->
+<!-- 			ISNULL(E.QTY,0) ADJ_OUT_QTY, -->
+<!-- 			(ISNULL(A.QTY,0)+ISNULL(D.QTY,0))-ISNULL(B.QTY,0)-ISNULL(E.QTY,0) REMAIN_QTY, -->
+<!-- 			0 PRE_OUT_QTY, -->
+<!-- 			Z.LOCATION_CD, -->
+<!-- 			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=Z.LOCATION_CD AND X.BASE_GROUP_CD='073')LOCATION_NM, -->
+<!-- 			Z.AREA_CD, -->
+<!-- 			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=Z.AREA_CD AND X.BASE_GROUP_CD='067')AREA_NM, -->
+<!-- 			Z.FLOOR_CD, -->
+<!-- 			Z.FLOOR_CD FLOOR_NM, -->
+<!-- 			Z.LOCATION_NO, -->
+<!-- 			(CASE WHEN A.SP_DATE IS NULL THEN D.SP_DATE ELSE A.SP_DATE END) IN_DATE -->
+<!-- 		FROM  -->
+<!-- 			( -->
+<!-- 			SELECT  -->
+<!-- 				SP_TYPE, -->
+<!-- 				SP_CD, -->
+<!-- 				BARCODE_NO, -->
+<!-- 				LOCATION_CD, -->
+<!-- 				AREA_CD, -->
+<!-- 				FLOOR_CD, -->
+<!-- 				LOCATION_NO -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN IN('001','003') -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,BARCODE_NO,LOCATION_CD,AREA_CD,FLOOR_CD,LOCATION_NO -->
+<!-- 		) Z -->
+<!-- 		LEFT OUTER JOIN -->
+<!-- 		( -->
+<!-- 			SELECT  -->
+<!-- 				SP_CD, -->
+<!-- 				SUM(SP_QTY) QTY, -->
+<!-- 				SP_DATE -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='001' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,SP_DATE -->
+<!-- 		) A -->
+<!-- 		ON Z.SP_CD=A.SP_CD -->
+	
+<!-- 		LEFT OUTER JOIN  -->
+<!-- 		( -->
+<!-- 			SELECT -->
+<!-- 				SP_CD, -->
+				
+<!-- 				SUM(SP_QTY) QTY -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='002' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN  -->
+<!-- 		) B -->
+<!-- 		ON Z.SP_CD=B.SP_CD -->
+<!-- 		LEFT OUTER JOIN  -->
+<!-- 		( -->
+<!-- 			SELECT  -->
+<!-- 				SP_CD, -->
+<!-- 				SUM(SP_QTY) QTY, -->
+<!-- 				SP_DATE -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='003' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,SP_DATE  -->
+<!-- 		) D -->
+<!-- 		ON Z.SP_CD=D.SP_CD -->
+	
+<!-- 		LEFT OUTER JOIN  -->
+<!-- 		( -->
+<!-- 			SELECT  -->
+<!-- 				SP_CD, -->
+<!-- 				SUM(SP_QTY) QTY -->
+<!-- 			FROM TB_STOCK_PAYMENT_ADM -->
+<!-- 			WHERE 1=1 -->
+<!-- 			AND BARCODE_NO = #{barcodeNo} -->
+<!-- 			AND SP_GUBUN='004' -->
+<!-- 			AND LOCATION_CD = #{locationCd} -->
+<!-- 			GROUP BY SP_TYPE,SP_CD,SP_GUBUN  -->
+<!-- 		) E -->
+<!-- 		ON Z.SP_CD=E.SP_CD -->
+	</select>
+	
+	<!-- 재공창고현황 -->
+	<!-- 재공창고현황 기본조회 -->
+	<select id="wareHouseList" resultMap="OutWhsAdmVo">
+		 SELECT 
+			A.PART_CD
+			,A.PART_REV
+			, A.PART_NM
+			, A.PART_SPEC
+			,(SELECT BASE_NM FROM TB_COMMON_CODE_ADM  WHERE BASE_CD = A.PART_UNIT AND BASE_GROUP_CD='035')PART_GUBUN
+			, A.PART_UNIT
+			, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM  WHERE BASE_CD = A.PART_UNIT AND BASE_GROUP_CD='036')PART_UNIT_NM
+			,ISNULL(SUM(B.PRE_OUT_QTY),0) PRE_OUT_QTY
+			,ISNULL(SUM(B.OUT_QTY),0) OUT_QTY
+			,ISNULL(SUM(B.PRE_OUT_QTY),0)-ISNULL(SUM(B.OUT_QTY),0) REAL_QTY
+		FROM TB_ITEM_PART_ADM A
+		LEFT OUTER JOIN TB_OUT_WHS_ADM B
+		ON A.PART_CD=B.PART_CD
+		AND A.PART_REV=B.PART_REV
+		GROUP BY A.PART_CD, A.PART_REV,A.PART_NM,A.PART_SPEC,A.PART_GUBUN,A.PART_UNIT
+		<if test="realQtyOption!=null and !realQtyOption.equals('')">
+		HAVING ISNULL(SUM(B.PRE_OUT_QTY),0)-ISNULL(SUM(B.OUT_QTY),0) > 0
+		</if>
+		ORDER BY A.PART_CD 
+	</select>
+	
+	<!-- 재공창고현황 상세조회 -->
+	<select id="wareHouseRead" resultMap="OutWhsAdmVo">
+		 SELECT 
+			BARCODE_NO
+			,PART_CD
+			,PART_REV
+			,ISNULL(SUM(PRE_OUT_QTY),0) PRE_OUT_QTY
+			,ISNULL(SUM(OUT_QTY),0) OUT_QTY
+			,ISNULL(SUM(PRE_OUT_QTY),0)-ISNULL(SUM(OUT_QTY),0) REAL_QTY
+			,PRE_OUT_WHS_DATE
+			,OUT_WHS_DATE
+			,OUT_CASE
+		FROM TB_OUT_WHS_ADM
+		WHERE 1=1
+		AND PART_CD=#{partCd}
+		AND PART_REV=#{partRev}
+		GROUP BY BARCODE_NO,PART_CD,PART_REV,PRE_OUT_WHS_DATE,OUT_WHS_DATE,OUT_CASE
+		ORDER BY PRE_OUT_WHS_DATE DESC
+	</select>
+	
+	<!--선입선출(원재료/제품) -->
+	<select id="fifoList" resultMap="OutWhsAdmVo">
+		SELECT
+			ITEM_SEQ,
+			MAIN_GUBUN,
+			ITEM_GUBUN,
+			ITEM_CD,
+			ITEM_NM,
+			ITEM_MODEL,
+			A.BARCODE_NO,
+			(CASE WHEN A.SP_DATE IS NULL THEN D.SP_DATE ELSE A.SP_DATE END) IN_DATE,
+			(SELECT LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN D.LOCATION_NO ELSE A.LOCATION_NO END)) LOCATION_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN D.LOCATION_NO ELSE A.LOCATION_NO END)) AND X.BASE_GROUP_CD='073') LOCATION_NM,	
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT AREA_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN D.LOCATION_NO ELSE A.LOCATION_NO END)) AND X.BASE_GROUP_CD='067') AREA_NM,	
+			(SELECT FLOOR_NM FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN D.LOCATION_NO ELSE A.LOCATION_NO END)) FLOOR_NM,
+			ISNULL(A.QTY,0)+ISNULL(D.QTY,0)-ISNULL(B.QTY,0)-ISNULL(E.QTY,0) REMAIN_QTY
+		FROM 
+			(
+			SELECT *
+			FROM TB_ITEM_INFO_ADM
+		) Z
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				SP_CD,
+				SP_DATE,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY,
+				LOCATION_NO
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN = '001'
+			AND LOCATION_CD = #{locationCd}
+			GROUP BY SP_TYPE,SP_GUBUN,SP_CD,SP_DATE,BARCODE_NO,LOCATION_NO
+		) A
+		ON Z.ITEM_SEQ=A.SP_CD
+		LEFT OUTER JOIN 
+		(
+			SELECT
+				SP_CD,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN = '002'
+			AND LOCATION_CD =#{locationCd}
+			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,BARCODE_NO
+		) B
+		ON Z.ITEM_SEQ=B.SP_CD
+		AND A.BARCODE_NO=B.BARCODE_NO
+		LEFT OUTER JOIN 
+		(
+			SELECT 
+				SP_CD,
+				SP_DATE,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY,
+				LOCATION_NO
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN = '003'
+			AND LOCATION_CD =#{locationCd}
+			GROUP BY SP_TYPE,SP_CD,SP_DATE,SP_GUBUN,BARCODE_NO,LOCATION_NO
+		) D
+		ON Z.ITEM_SEQ=D.SP_CD
+		AND A.BARCODE_NO=D.BARCODE_NO
+		LEFT OUTER JOIN 
+		(
+			SELECT 
+				SP_CD,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN ='004'
+			AND LOCATION_CD =#{locationCd}
+			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,BARCODE_NO
+		) E
+		ON Z.ITEM_SEQ=E.SP_CD
+		AND A.BARCODE_NO=E.BARCODE_NO
+		WHERE 1=1
+		AND Z.ITEM_SEQ = #{itemSeq}
+		AND A.SP_DATE <![CDATA[<=]]> (
+								SELECT SP_DATE
+								FROM TB_STOCK_PAYMENT_ADM
+								WHERE 1=1
+								AND SP_SUB_GUBUN IN ('자재입고','초기입고')
+								AND BARCODE_NO = #{barcodeNo}
+								AND LOCATION_CD = #{locationCd}
+							)
+		AND A.BARCODE_NO <![CDATA[<=]]> #{barcodeNo}
+		AND ISNULL(A.QTY,0)+ISNULL(D.QTY,0)-ISNULL(B.QTY,0)-ISNULL(E.QTY,0) > 0
+		AND A.BARCODE_NO != #{barcodeNo}
+		ORDER BY A.SP_DATE ASC, A.BARCODE_NO ASC
+	</select>
+	
+		
+	<!--출하요청 선입선출 -->
+	<select id="itemReqFifoList" resultMap="OutWhsAdmVo">
+		SELECT
+			ITEM_SEQ,
+			MAIN_GUBUN,
+			ITEM_GUBUN,
+			ITEM_CD,
+			ITEM_NM,
+			ITEM_MODEL,
+			A.SP_DATE,
+			A.BARCODE_NO,
+			(CASE WHEN A.SP_DATE IS NULL THEN A.SP_DATE ELSE A.SP_DATE END) IN_DATE,
+			(SELECT LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN A.LOCATION_NO ELSE A.LOCATION_NO END)) LOCATION_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN A.LOCATION_NO ELSE A.LOCATION_NO END)) AND X.BASE_GROUP_CD='073') LOCATION_NM,	
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT AREA_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN A.LOCATION_NO ELSE A.LOCATION_NO END)) AND X.BASE_GROUP_CD='067') AREA_NM,	
+			(SELECT FLOOR_NM FROM TB_LOCATION_ADM X WHERE X.LOC_NO=(CASE WHEN A.LOCATION_NO IS NULL THEN A.LOCATION_NO ELSE A.LOCATION_NO END)) FLOOR_NM,
+			ISNULL(A.QTY,0)-ISNULL(B.QTY,0) REMAIN_QTY
+		FROM 
+			(
+			SELECT *
+			FROM TB_ITEM_INFO_ADM
+		) Z
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				SP_CD,
+				SP_DATE,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY,
+				LOCATION_NO
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN = '001'
+			AND SP_SUB_GUBUN IN ('제품입고','초기입고')
+			AND LOCATION_CD = '002'
+			GROUP BY SP_TYPE,SP_GUBUN,SP_CD,SP_DATE,BARCODE_NO,LOCATION_NO
+		) A
+		ON Z.ITEM_SEQ=A.SP_CD
+		LEFT OUTER JOIN 
+		(
+			SELECT
+				SP_CD,
+				BARCODE_NO,
+				SUM(SP_QTY) QTY
+			FROM TB_STOCK_PAYMENT_ADM
+			WHERE 1=1
+			AND SP_TYPE = #{itemGubun}
+			AND SP_GUBUN = '002'
+			AND SP_SUB_GUBUN = '제품출고'
+			AND LOCATION_CD ='002'
+			GROUP BY SP_TYPE,SP_CD,SP_GUBUN,BARCODE_NO
+		) B
+		ON Z.ITEM_SEQ=B.SP_CD
+		AND A.BARCODE_NO=B.BARCODE_NO
+		WHERE 1=1
+		AND Z.ITEM_SEQ = #{itemSeq}
+		AND A.SP_DATE <![CDATA[<=]]> (
+								SELECT SP_DATE
+								FROM TB_STOCK_PAYMENT_ADM
+								WHERE 1=1
+								AND SP_SUB_GUBUN IN ('제품입고','초기입고')
+								AND BARCODE_NO = #{barcodeNo}
+								AND LOCATION_CD = '002'
+							)
+		AND A.BARCODE_NO <![CDATA[<=]]> #{barcodeNo}
+		AND ISNULL(A.QTY,0)-ISNULL(B.QTY,0) > 0
+		AND A.BARCODE_NO != #{barcodeNo}
+		ORDER BY A.SP_DATE ASC, A.BARCODE_NO ASC
+	</select>
+	
+	<!-- 자재투입 선입선출 -->
+	<select id="fifoList2" resultMap="OutWhsAdmVo">
+		SELECT
+			A.PO_NO,
+			A.PO_SEQ,
+			A.IN_SEQ,
+			A.OUT_SEQ,
+			A.OUT_CASE,
+			A.BARCODE_NO,
+			A.WORK_ORD_NO,
+			A.ITEM_SEQ,
+			(SELECT ITEM_GUBUN FROM TB_ITEM_INFO_ADM X WHERE X.ITEM_SEQ=A.ITEM_SEQ) ITEM_GUBUN,
+			ISNULL(A.PRE_OUT_QTY,0) PRE_OUT_QTY,
+			ISNULL(A.OUT_QTY,0) OUT_QTY,
+			LOCATION_CD,
+			AREA_CD,
+			FLOOR_CD,
+			LOCATION_NO
+		FROM TB_OUT_WHS_ADM A
+		WHERE 1=1
+		AND LOCATION_NO = #{locationNo}
+		AND A.BARCODE_NO <![CDATA[<=]]> #{barcodeNo}
+		AND A.BARCODE_NO != #{barcodeNo}
+		AND ISNULL(A.PRE_OUT_QTY,0) - ISNULL(A.OUT_QTY,0) > 0
+	</select>
+	
+	<!-- 외주입고(봉제) 목록조회 -->
+	<select id="outsourcingWhsList" resultMap="OutWhsAdmVo">
+		SELECT 
+			IIA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_MODEL
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND X.BASE_CD = IIA_TB.ITEM_MODEL) ITEM_MODEL_NM
+			, IIA_TB.BOX_COUNT
+			, IPA_TB.DEAL_CORP_CD
+			, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = IPA_TB.DEAL_CORP_CD) DEAL_CORP_NM
+			, PO_TB.PRE_IN_WHS_DATE
+			, PO_TB.PRE_IN_WHS_QTY
+			, LA_TB.LOC_NO
+			, LA_TB.LOC_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '073' AND X.BASE_CD = LA_TB.LOC_CD) LOC_NM
+			, LA_TB.FLOOR_NM
+			, LA_TB.AREA_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '067' AND X.BASE_CD = LA_TB.AREA_CD) AREA_CD_NM
+			, LOC_TB.LOC_NO OUT_CORP_LOC_NO
+			, LOC_TB.LOC_CD OUT_CORP_LOC_CD
+			, LOC_TB.AREA_CD OUT_CORP_AREA_CD
+			, LOC_TB.AREA_NM OUT_CORP_AREA_NM
+		FROM TB_ITEM_INFO_ADM IIA_TB
+		LEFT OUTER JOIN (
+			SELECT 
+				ITEM_SEQ,
+				DEAL_CORP_CD,
+				OUT_GUBUN
+			FROM TB_ITEM_PRCSS_ADM
+			GROUP BY ITEM_SEQ,DEAL_CORP_CD,OUT_GUBUN
+		) IPA_TB
+		ON IIA_TB.ITEM_SEQ = IPA_TB.ITEM_SEQ
+		AND IPA_TB.OUT_GUBUN = '002'
+		LEFT OUTER JOIN (
+			SELECT 
+				POA_TB.DEAL_CORP_CD,
+				MAX(IOWA_TB.PRE_IN_WHS_DATE) PRE_IN_WHS_DATE,
+				SUM(IOWA_TB.PRE_IN_WHS_QTY) PRE_IN_WHS_QTY,
+				POD_TB.ITEM_SEQ
+			FROM TB_PURCHASE_ORDER_ADM POA_TB
+			LEFT OUTER JOIN TB_PURCHASE_ORDER_DTL POD_TB
+			ON POA_TB.PO_NO = POD_TB.PO_NO
+			LEFT OUTER JOIN TB_IN_OUT_WHS_ADM IOWA_TB
+			ON POD_TB.PO_NO=IOWA_TB.PO_NO
+			AND POD_TB.PO_SEQ = IOWA_TB.PO_SEQ
+			WHERE 1=1
+			<if test="dealCorpCd != null and !dealCorpCd.equals('')">
+			AND POA_TB.DEAL_CORP_CD= #{dealCorpCd}
+			</if>
+			<if test="startDate != null and !startDate.equals('')">
+				AND PRE_IN_WHS_DATE BETWEEN #{startDate} AND #{endDate}
+			</if>
+					
+			GROUP BY DEAL_CORP_CD,POD_TB.ITEM_SEQ
+		)PO_TB
+		ON IPA_TB.ITEM_SEQ=PO_TB.ITEM_SEQ
+		AND IPA_TB.DEAL_CORP_CD=PO_TB.DEAL_CORP_CD
+		LEFT OUTER JOIN TB_LOCATION_ADM LA_TB
+		ON IIA_TB.LOC_NO = LA_TB.LOC_NO
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				LOC_NO
+				, LOC_CD
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=LA_TB.LOC_CD AND X.BASE_GROUP_CD='073') LOC_NM
+				, AREA_CD
+				, ISNULL(
+					(SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = LA_TB.AREA_CD AND X.BASE_GROUP_CD = '067')
+					, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = LA_TB.AREA_CD)
+				) AREA_NM
+			FROM TB_LOCATION_ADM LA_TB
+		)LOC_TB
+		ON IPA_TB.DEAL_CORP_CD=LOC_TB.AREA_CD
+		
+		WHERE 1=1
+		<if test="dealCorpCd != null and !dealCorpCd.equals('')">
+		AND IPA_TB.DEAL_CORP_CD = #{dealCorpCd}
+		</if>
+		<if test="bongjaeCheck != null and !bongjaeCheck.equals('')">
+		AND (CASE IIA_TB.ITEM_GUBUN WHEN '003' THEN (CASE IIA_TB.PROD_GUBUN WHEN '003' THEN 'O' WHEN '005' THEN 'O' ELSE 'X' END) ELSE 'X' END) = 'O'
+		</if>
+	</select>
+	
+	<!-- 외주입고(봉제) 외주사 조회 -->
+	<select id="outscDealList" resultMap="OutWhsAdmVo">
+		SELECT DISTINCT
+			IPA_TB.DEAL_CORP_CD
+			, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = IPA_TB.DEAL_CORP_CD) DEAL_CORP_NM
+		FROM TB_ITEM_INFO_ADM IIA_TB
+		INNER JOIN TB_ITEM_PRCSS_ADM IPA_TB
+		ON IIA_TB.ITEM_SEQ = IPA_TB.ITEM_SEQ
+		AND IPA_TB.OUT_GUBUN = '002'
+		WHERE 1=1
+	</select>
+	
+	<!-- 외주입고(봉제) 자재불출 확인 -->
+	<select id="outBomInputConsumpt" resultMap="OutWhsAdmVo">
+		SELECT *
+		FROM (
+			SELECT
+				OWA_TB.ITEM_SEQ
+				, IIA_TB.ITEM_GUBUN
+				, OWA_TB.OUT_LOCATION_NO
+				, IME_TB.ITEM_CONSUMPT -- 소요량
+				, SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) AS REAL_QTY -- 외주처에 남은 자재수량
+				, ( CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT) ) AS NEED_QTY -- 반제품을 만들기 위해 필요한 자재수량
+				, ( CASE WHEN 
+					SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) -- REAL_QTY
+					 <![CDATA[>=]]> ( CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT) ) -- NEED_QTY
+					THEN 'O'
+					ELSE 'X' END
+				) CHECK_REMAIN_QTY
+			FROM TB_ITEM_MOTOR_EBOM IME_TB
+			
+			LEFT OUTER JOIN TB_OUT_WHS_ADM OWA_TB
+			ON IME_TB.ITEM_SEQ = OWA_TB.ITEM_SEQ
+			AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+			AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+			
+			INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+			ON IME_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+			
+			WHERE 1=1
+			AND IME_TB.UPPER_ITEM_SEQ = #{itemSeq} --LVL 1단계 자재만 조회
+			
+			GROUP BY
+				OWA_TB.ITEM_SEQ --품목 별
+				, IIA_TB.ITEM_GUBUN
+				, OWA_TB.OUT_LOCATION_NO --출고창고(외주처)
+				, IME_TB.ITEM_CONSUMPT --소요량
+		) A
+		WHERE 1=1
+		<if test="checkRemainQty != null and !checkRemainQty.equals('')">
+		AND A.CHECK_REMAIN_QTY = 'X' --외주처에 남은 자재수량이 부족한지 확인
+		</if>
+	</select>
+	
+	<!-- 외주입고(봉제) 자재출고 조회 -->
+	<select id="outBomInputList" resultMap="OutWhsAdmVo">
+		SELECT
+			IME_TB.ITEM_SEQ
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IME_TB.ITEM_CONSUMPT -- 소요량
+			, ( CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT) ) AS NEED_QTY 
+			, SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) AS SP_QTY
+			, (
+				CASE WHEN 
+				( (CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT)) - ISNULL( SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY)), 0) ) <![CDATA[>]]> 0 
+				THEN ( (CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT)) - ISNULL( SUM(CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY)), 0) )
+				ELSE '0' 
+				END
+			) AS LACK_QTY
+			, (
+				CASE WHEN ( CONVERT(FLOAT, #{inQty}) * CONVERT(FLOAT, IME_TB.ITEM_CONSUMPT) ) <![CDATA[<=]]> SUM(CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY))
+				THEN '충분'
+				ELSE '부족'
+				END
+			) IN_WHS_CHECK
+			, OWA_TB.OUT_LOCATION_NO LOCATION_NO
+			, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = LA_TB.AREA_CD) LOCATION_NM
+			, ISNULL(
+				(SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = LA_TB.AREA_CD AND X.BASE_GROUP_CD = '067')
+				, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = LA_TB.AREA_CD)
+			) AREA_NM
+		FROM TB_ITEM_MOTOR_EBOM IME_TB
+			
+		LEFT OUTER JOIN TB_OUT_WHS_ADM OWA_TB
+		ON IME_TB.ITEM_SEQ = OWA_TB.ITEM_SEQ
+		AND OWA_TB.OUT_GUBUN = '001' --외주입고만 조회
+		AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+			
+		INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON IME_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+
+		LEFT OUTER JOIN TB_LOCATION_ADM LA_TB
+		ON #{locationNo} = LA_TB.LOC_NO
+			
+		WHERE 1=1
+		AND IME_TB.UPPER_ITEM_SEQ = #{itemSeq} --LVL 1단계 자재만 조회
+			
+		GROUP BY
+			IME_TB.ITEM_SEQ --품목 별
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IME_TB.ITEM_CONSUMPT --소요량
+			, OWA_TB.OUT_LOCATION_NO --출고창고(외주처)
+			, LA_TB.LOC_CD
+			, LA_TB.AREA_CD
+			
+		ORDER BY
+			IIA_TB.ITEM_CD, IME_TB.ITEM_SEQ --외주재고현황과 정렬 같게 (id="outInventoryList")
+	</select>
+	
+	<!-- 외주입고(봉제) 선입선출 조회 -->
+	<select id="outscFifoRead" resultMap="OutWhsAdmVo">
+		SELECT TOP(1)
+			OWA_TB.IDX
+			, OWA_TB.ITEM_SEQ
+			, OWA_TB.BARCODE_NO
+			, ( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) REAL_QTY --현재고
+		FROM TB_OUT_WHS_ADM OWA_TB
+		WHERE 1=1
+		AND OWA_TB.ITEM_SEQ = #{itemSeq} --자재 품목 시퀀스
+		AND OWA_TB.OUT_GUBUN = '001' --외주입고
+		AND OWA_TB.OUT_LOCATION_NO = #{locationNo} --외주처
+		AND CAST(OWA_TB.OUT_QTY AS FLOAT) > CAST(OWA_TB.USE_QTY AS FLOAT) --현재고가 있는 자재만 조회
+		ORDER BY OWA_TB.IDX
+	</select>
+	
+	<!-- 외주재고현황 목록조회 -->
+	<select id="outInventoryList" resultMap="OutWhsAdmVo">
+		SELECT 
+			IPA.DEAL_CORP_CD,
+			(SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=IPA.DEAL_CORP_CD) DEAL_CORP_NM,
+			IPA.DEAL_COST,
+			IPA.DEAL_DATE,
+			IPA.ITEM_SEQ UPPER_ITEM_SEQ,
+			IIA.ITEM_CD UPPER_ITEM_CD,
+			IIA.ITEM_NM UPPER_ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_MODEL AND X.BASE_GROUP_CD='099') UPPER_ITEM_MODEL,
+			IME.ITEM_SEQ,
+			IIAS.ITEM_CD,
+			IIAS.ITEM_NM,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIAS.ITEM_MODEL AND X.BASE_GROUP_CD='099') ITEM_MODEL,
+			IME.ITEM_CONSUMPT,
+			ISNULL(OWA.OUT_QTY,0) OUT_QTY,
+			OWA.OUT_WHS_DATE,
+			ROUND(CONVERT(FLOAT,ISNULL(IWA.IN_WHS_QTY,0)) * CONVERT(FLOAT,ITEM_CONSUMPT),0) IN_QTY,
+			IWA.PRE_IN_WHS_DATE IN_WHS_DATE,
+			ISNULL(STOCK.SP_QTY, 0) TM_QTY,
+			LOC.LOC_CD,
+			LOC.LOC_NO
+		FROM (
+			SELECT ITEM_SEQ, DEAL_CORP_CD,DEAL_COST,DEAL_DATE
+			FROM (
+				SELECT 
+					DEAL_CORP_CD,
+					DEAL_COST,
+					DEAL_DATE,
+					ITEM_SEQ,
+					ROW_NUMBER()OVER(PARTITION BY ITEM_SEQ, DEAL_CORP_CD ORDER BY DEAL_DATE) ROW_IDX
+				FROM TB_ITEM_PRCSS_ADM 
+				WHERE 1=1
+				AND OUT_GUBUN='002'
+				AND (DEAL_CORP_CD IS NOT NULL AND DEAL_CORP_CD !='')
+				<if test="dealCorpCd!=null and !dealCorpCd.equals('')">
+				AND DEAL_CORP_CD=#{dealCorpCd}
+				</if>
+				
+				<if test="endDate!=null and !endDate.equals('')">
+				AND DEAL_DATE<![CDATA[<=]]> #{endDate}
+				</if>
+			)T
+			WHERE 1=1
+			AND T.ROW_IDX = '1'
+		) IPA
+		
+		LEFT OUTER JOIN TB_ITEM_MOTOR_EBOM IME
+		ON IPA.ITEM_SEQ=IME.UPPER_ITEM_SEQ
+		
+		LEFT OUTER JOIN
+		(
+			SELECT 
+				DEAL_CORP_CD,
+				ITEM_SEQ,
+				SUM(CONVERT(FLOAT,OUT_QTY)) OUT_QTY,
+				MAX(OUT_WHS_DATE) OUT_WHS_DATE
+			FROM
+			(
+			 SELECT 
+				OUT_SLIP_NO,
+				OUT_SLIP_SEQ,
+				OUT_GUBUN,
+				BARCODE_NO,
+				ITEM_SEQ,
+				OUT_QTY,
+				OUT_WHS_DATE,
+				LOCATION_NO,
+				Y.AREA_CD DEAL_CORP_CD
+			 FROM TB_OUT_WHS_ADM X,TB_LOCATION_ADM Y
+			 WHERE X.OUT_LOCATION_NO=Y.LOC_NO
+			 <if test="startDate!=null and !startDate.equals('')">
+			 AND OUT_WHS_DATE BETWEEN #{startDate} AND #{endDate}
+			 </if>
+			)T
+			GROUP BY ITEM_SEQ,DEAL_CORP_CD
+		)OWA
+		ON IPA.DEAL_CORP_CD=OWA.DEAL_CORP_CD
+		AND IME.ITEM_SEQ=OWA.ITEM_SEQ
+		
+		LEFT OUTER JOIN	
+		(
+			SELECT	
+				Y.DEAL_CORP_CD,
+				X.ITEM_SEQ,
+				SUM(X.IN_WHS_QTY) IN_WHS_QTY,
+				MAX(X.PRE_IN_WHS_DATE) PRE_IN_WHS_DATE
+			FROM TB_IN_OUT_WHS_ADM X, TB_PURCHASE_ORDER_ADM Y
+			WHERE X.PO_NO=Y.PO_NO
+			<if test="startDate!=null and !startDate.equals('')">
+			AND X.PRE_IN_WHS_DATE BETWEEN #{startDate} AND #{endDate}
+			</if>
+			
+			GROUP BY X.ITEM_SEQ,Y.DEAL_CORP_CD
+		)IWA
+		ON IPA.ITEM_SEQ=IWA.ITEM_SEQ
+		AND IPA.DEAL_CORP_CD=IWA.DEAL_CORP_CD
+		
+		LEFT OUTER JOIN
+		(
+			SELECT
+				X.ITEM_SEQ
+				, SUM( CONVERT(FLOAT, X.OUT_QTY) - CONVERT(FLOAT, X.USE_QTY) ) SP_QTY
+				, Y.AREA_CD DEAL_CORP_CD
+			FROM TB_OUT_WHS_ADM X, TB_LOCATION_ADM Y
+			WHERE 1=1
+			AND X.OUT_LOCATION_NO = Y.LOC_NO
+			AND X.OUT_GUBUN = '001'
+			GROUP BY X.ITEM_SEQ,  Y.AREA_CD
+		) STOCK
+		ON IME.ITEM_SEQ = STOCK.ITEM_SEQ
+		AND IPA.DEAL_CORP_CD = STOCK.DEAL_CORP_CD
+		
+		,TB_ITEM_INFO_ADM IIA,TB_ITEM_INFO_ADM IIAS,TB_LOCATION_ADM LOC
+		
+		WHERE 1=1
+		AND IIA.ITEM_SEQ=IPA.ITEM_SEQ
+		AND IIAS.ITEM_SEQ=IME.ITEM_SEQ
+		AND LOC.AREA_CD=IPA.DEAL_CORP_CD
+		
+		ORDER BY
+			(SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=IPA.DEAL_CORP_CD) --외주처
+			, IIA.ITEM_NM, IIA.ITEM_SEQ --반제품
+			, IIAS.ITEM_CD, IIAS.ITEM_SEQ --자재
+	</select>
+	
+	<!-- 자재출고(봉제) 삭제 -->
+	<delete id="tbOutWhsAdmDel">
+		DELETE TB_OUT_WHS_ADM
+		WHERE OUT_SLIP_NO = #{outSlipNo}
+		AND OUT_SLIP_SEQ = #{outSlipSeq}	
+	</delete>
+	
+	<!-- 외주처 자재LOT현황 -->
+	<select id="outInventoryDtlList" resultMap="OutWhsAdmVo">
+		SELECT
+			OWA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, OWA_TB.BARCODE_NO
+			, MIN(OWA_TB.OUT_WHS_DATE) IN_DATE
+			, SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) TM_QTY
+			, OWA_TB.OUT_LOCATION_CD
+			, OWA_TB.OUT_LOCATION_NO
+		FROM TB_OUT_WHS_ADM OWA_TB
+		INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON OWA_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+
+		WHERE 1=1
+		<if test="tmMon!=null and !tmMon.equals('')">
+			AND OWA_TB.OUT_WHS_DATE BETWEEN LEFT(#{tmMon},4)+'0101' AND #{tmMon} + '31'
+		</if>
+		<if test="endDate!=null and !endDate.equals('')">
+			AND OWA_TB.OUT_WHS_DATE <![CDATA[<=]]> #{endDate}
+		</if>
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+			AND OWA_TB.ITEM_SEQ = #{itemSeq}
+		</if>
+		<if test="locationCd!=null and !locationCd.equals('')">
+			AND OWA_TB.OUT_LOCATION_CD = #{locationCd}
+		</if>
+		<if test="locationNo!=null and !locationNo.equals('')">
+			AND OWA_TB.OUT_LOCATION_NO = #{locationNo}
+		</if>
+
+		GROUP BY OWA_TB.ITEM_SEQ
+			, OWA_TB.BARCODE_NO
+			, OWA_TB.OUT_LOCATION_CD
+			, OWA_TB.OUT_LOCATION_NO
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IIA_TB.ITEM_GUBUN
+
+		HAVING SUM( CONVERT(FLOAT, OWA_TB.OUT_QTY) - CONVERT(FLOAT, OWA_TB.USE_QTY) ) > 0
+		ORDER BY MIN(OWA_TB.OUT_WHS_DATE) ASC, OWA_TB.BARCODE_NO ASC
+	</select>
+	
+	<!-- SHEET************************************************************************* -->
+	<select id="sheetCorpList" resultMap="OutWhsAdmVo">
+		SELECT 
+			T.DEAL_CORP_CD,
+			T.DEAL_CORP_NM,
+			COUNT(T.ITEM_SEQ) ITEM_COUNT
+		FROM (
+		SELECT 
+			IPA.DEAL_CORP_CD,
+			DCA.DEAL_CORP_NM,
+			IME.ITEM_SEQ
+		FROM TB_ITEM_PRCSS_ADM IPA,TB_DEAL_CORP_ADM DCA, TB_ITEM_MOTOR_EBOM IME
+		WHERE 1=1
+		AND IPA.DEAL_CORP_CD=DCA.DEAL_CORP_CD
+		AND IPA.ITEM_SEQ=IME.UPPER_ITEM_SEQ
+		AND OUT_GUBUN='002'
+		
+		GROUP BY IPA.DEAL_CORP_CD,DCA.DEAL_CORP_NM,IPA.ITEM_SEQ,IME.ITEM_SEQ
+		)T
+		GROUP BY T.DEAL_CORP_CD,T.DEAL_CORP_NM
+	</select>
+	
+	<select id="sheetItemList" resultMap="OutWhsAdmVo">
+		SELECT
+			T.DEAL_CORP_CD,
+			T.ITEM_SEQ,
+			REPLACE(T.ITEM_CD,'''', '\''') ITEM_CD,
+			REPLACE(T.ITEM_NM,'''', '\''') ITEM_NM,
+			COUNT(T.LOWER_SEQ) ITEM_COUNT
+		FROM (
+		SELECT 
+			IPA.DEAL_CORP_CD,
+			IPA.ITEM_SEQ,
+			IIA.ITEM_CD,
+			IIA.ITEM_NM,
+			IME.ITEM_SEQ LOWER_SEQ
+		FROM TB_ITEM_PRCSS_ADM IPA, TB_ITEM_INFO_ADM IIA,TB_ITEM_MOTOR_EBOM IME,TB_ITEM_INFO_ADM IIA2
+		WHERE 1=1
+		AND IPA.ITEM_SEQ=IIA.ITEM_SEQ
+		AND IPA.ITEM_SEQ=IME.UPPER_ITEM_SEQ
+		AND IME.ITEM_SEQ=IIA2.ITEM_SEQ
+		AND OUT_GUBUN='002'
+		GROUP BY IPA.DEAL_CORP_CD,IPA.ITEM_SEQ,IIA.ITEM_CD,IIA.ITEM_NM,IME.ITEM_SEQ
+		) T
+		GROUP BY T.DEAL_CORP_CD,T.ITEM_SEQ,T.ITEM_CD,T.ITEM_NM
+	</select>
+	
+	<select id="sheetPartList" resultMap="OutWhsAdmVo">
+		SELECT 
+			IPA.DEAL_CORP_CD,
+			IPA.ITEM_SEQ UPPER_ITEM_SEQ,
+			REPLACE(IIA.ITEM_CD,'''', '\''') UPPER_ITEM_CD,
+			REPLACE(IIA.ITEM_NM,'''', '\''') UPPER_ITEM_NM,
+			IME.ITEM_SEQ,
+			REPLACE(IIA2.ITEM_CD,'''', '\''') ITEM_CD,
+			REPLACE(IIA2.ITEM_NM,'''', '\''') ITEM_NM
+		FROM TB_ITEM_PRCSS_ADM IPA, TB_ITEM_INFO_ADM IIA,TB_ITEM_MOTOR_EBOM IME,TB_ITEM_INFO_ADM IIA2
+		WHERE 1=1
+		AND IPA.ITEM_SEQ=IIA.ITEM_SEQ
+		AND IPA.ITEM_SEQ=IME.UPPER_ITEM_SEQ
+		AND IME.ITEM_SEQ=IIA2.ITEM_SEQ
+		AND OUT_GUBUN='002'
+		GROUP BY IPA.DEAL_CORP_CD,IPA.ITEM_SEQ,IIA.ITEM_CD,IIA.ITEM_NM,IME.ITEM_SEQ,IIA2.ITEM_CD,IIA2.ITEM_NM
+		ORDER BY DEAL_CORP_CD, IPA.ITEM_SEQ,IME.ITEM_SEQ
+	</select>
+	
+	<!-- 외주재고현황 출고수량 조회 -->
+	<select id="sheetOutQtyList" resultMap="OutWhsAdmVo">
+		SELECT 
+			IPA.DEAL_CORP_CD,
+			IME.ITEM_SEQ,
+			T.OUT_WHS_DATE,
+			T.OUT_QTY
+		FROM TB_ITEM_PRCSS_ADM IPA
+		LEFT OUTER JOIN TB_ITEM_MOTOR_EBOM IME
+		ON IPA.ITEM_SEQ=IME.UPPER_ITEM_SEQ
+		LEFT OUTER JOIN(
+			SELECT 
+				T.DEAL_CORP_CD,
+				T.ITEM_SEQ,
+				T.OUT_WHS_DATE OUT_WHS_DATE,
+				SUM(CONVERT(FLOAT,T.OUT_QTY)) OUT_QTY
+			FROM (
+				SELECT 
+					OWA.ITEM_SEQ,
+					OWA.OUT_QTY,
+					OUT_WHS_DATE,
+					LOC.AREA_CD DEAL_CORP_CD
+				FROM TB_OUT_WHS_ADM OWA,TB_LOCATION_ADM LOC
+				WHERE 1=1
+				AND OWA.OUT_LOCATION_NO=LOC.LOC_NO
+				AND OUT_GUBUN = '001'
+				AND OUT_WHS_DATE BETWEEN LEFT(#{tmMon},4)+'0101' AND #{tmMon} + '31'
+				
+			)T
+			WHERE 1=1
+			AND OUT_WHS_DATE = #{outWhsDate}
+			GROUP BY T.DEAL_CORP_CD,ITEM_SEQ,OUT_WHS_DATE
+		) T
+		ON T.ITEM_SEQ=IME.ITEM_SEQ
+		AND T.DEAL_CORP_CD=IPA.DEAL_CORP_CD 
+		WHERE 1=1
+		AND OUT_GUBUN='002'
+		AND IPA.DEAL_CORP_CD=#{dealCorpCd}
+		GROUP BY IPA.DEAL_CORP_CD,IPA.ITEM_SEQ,IME.ITEM_SEQ,T.OUT_WHS_DATE,T.OUT_QTY
+		ORDER BY DEAL_CORP_CD,IPA.ITEM_SEQ,IME.ITEM_SEQ,T.OUT_WHS_DATE
+	</select>
+	
+</mapper>
+	

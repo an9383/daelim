@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mes.mappers.tm.prcssUserReportMapper">
+    
+    <resultMap id="PrcssUserReportVo" type="mes.domain.tm.PrcssUserReportVo">
+        <result property="idx"					column="IDX" 					/>
+        <result property="puaIdx"				column="PUA_IDX" 				/>
+        <result property="workDate"				column="WORK_DATE" 				/>
+        <result property="workDtl"				column="WORK_DTL" 				/>
+        <result property="itemModel"			column="ITEM_MODEL" 			/>
+        <result property="workMin"				column="WORK_MIN" 				/>
+        <result property="outputQty"			column="OUTPUT_QTY" 			/>
+        <result property="pairQty"				column="PAIR_QTY" 				/>
+        <result property="faultyQty"			column="FAULTY_QTY" 			/>
+        <result property="regId"				column="REG_ID" 				/>
+        <result property="regDate"				column="REG_DATE" 				/>
+        <result property="updId"				column="UPD_ID" 				/>
+        <result property="updDate"				column="UPD_DATE" 				/>
+        
+        <!-- 추가사항 -->
+        <result property="itemModelNm"			column="ITEM_MODEL_NM" 			/>
+        <result property="workDtlNm"			column="WORK_DTL_NM" 			/>
+        <result property="puaIdxNm"				column="PUA_IDX_NM" 			/>
+        <result property="userNm"				column="USER_NM" 				/>
+        <result property="prcssIdx"				column="PRCSS_IDX" 				/>
+    </resultMap>
+    
+    <!-- list -->
+    <select id="prcssUserReportList" resultMap="PrcssUserReportVo">
+   		SELECT
+   			PUR_TB.IDX
+			, PUR_TB.PUA_IDX
+			, PCA_TB.USER_NM
+			, (SELECT X.PRCSS_NM FROM TB_PRCSS_CODE_ADM X WHERE CONCAT(X.PRCSS_CD, '|', X.PRCSS_TYPE, '|', X.LOWER_PRCSS_CD, '|', X.PRCSS_SEQ) = PCA_TB.PRCSS_IDX) PUA_IDX_NM
+			, PUR_TB.WORK_DATE
+			, PUR_TB.WORK_DTL
+			, (SELECT X.PRCSS_NM FROM TB_PRCSS_CODE_ADM X WHERE CONCAT(X.PRCSS_CD, '|', X.PRCSS_TYPE, '|', X.LOWER_PRCSS_CD, '|', X.PRCSS_SEQ) = PUR_TB.WORK_DTL) WORK_DTL_NM
+			, PUR_TB.ITEM_MODEL
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND PUR_TB.ITEM_MODEL = X.BASE_CD) ITEM_MODEL_NM
+			, PUR_TB.WORK_MIN
+			, PUR_TB.OUTPUT_QTY
+			, PUR_TB.PAIR_QTY
+			, PUR_TB.FAULTY_QTY
+			, PUR_TB.REG_ID
+			, PUR_TB.REG_DATE
+			, PUR_TB.UPD_ID
+			, PUR_TB.UPD_DATE
+		FROM TB_PRCSS_USER_REPORT PUR_TB
+		INNER JOIN TB_PRCSS_USER_ADM PCA_TB
+		ON PUR_TB.PUA_IDX = PCA_TB.IDX
+		WHERE 1=1
+		<if test="puaIdx != null and !puaIdx.equals('')">
+		AND PUR_TB.PUA_IDX = #{puaIdx}
+		</if>
+		<if test="workDate != null and !workDate.equals('')">
+		AND PUR_TB.WORK_DATE = #{workDate}
+		</if>
+		<if test="startDate != null and !startDate.equals('')">
+		AND PUR_TB.WORK_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="prcssIdx != null and !prcssIdx.equals('')">
+		AND PCA_TB.PRCSS_IDX = #{prcssIdx}
+		</if>
+		<if test="itemModel != null and !itemModel.equals('')">
+		AND PUR_TB.ITEM_MODEL = #{itemModel}
+		</if>
+		
+		<if test="setOrderWmsc0290 != null and !setOrderWmsc0290.equals('')">
+		ORDER BY USER_NM, WORK_DATE
+		, (SELECT X.PRCSS_NM FROM TB_PRCSS_CODE_ADM X WHERE CONCAT(X.PRCSS_CD, '|', X.PRCSS_TYPE, '|', X.LOWER_PRCSS_CD, '|', X.PRCSS_SEQ) = PCA_TB.PRCSS_IDX) --PUA_IDX_NM
+		, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND PUR_TB.ITEM_MODEL = X.BASE_CD) --ITEM_MODEL_NM
+		</if>
+    </select>
+    
+    <!-- create -->
+    <insert id="prcssUserReportCreate">
+	    INSERT INTO TB_PRCSS_USER_REPORT(
+			PUA_IDX,
+			WORK_DATE,
+			WORK_DTL,
+			ITEM_MODEL,
+			WORK_MIN,
+			OUTPUT_QTY,
+			PAIR_QTY,
+			FAULTY_QTY,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{puaIdx},
+			#{workDate},
+			#{workDtl},
+			#{itemModel},
+			#{workMin},
+			#{outputQty},
+			#{pairQty},
+			#{faultyQty},
+			#{regId},
+			GETDATE()
+		)
+    </insert>
+    
+</mapper>  

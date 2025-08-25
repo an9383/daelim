@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.tm.stockMatrlAdmMapper">
+
+	<resultMap id="StockMatrlAdmVo" type="mes.domain.tm.StockMatrlAdmVo">
+		<result property="smNo"					column="SM_NO"				/>
+		<result property="smSeq"		    	column="SM_SEQ"				/>
+		<result property="smType"				column="SM_TYPE"			/>			
+		<result property="smTypeNm"				column="SM_TYPE_NM"			/>	
+		<result property="smCd"					column="SM_CD"				/>		
+		<result property="smNm"		  	  		column="SM_NM"				/>
+		<result property="smModel"		  	  	column="SM_MODEL"			/>
+		<result property="smUnit"		  	  	column="SM_UNIT"			/>
+		<result property="smGubun"		        column="SM_GUBUN"			/>
+		<result property="smGubunNm"		    column="SM_GUBUN_NM"		/>
+		<result property="smSubGubun"		    column="SM_SUB_GUBUN"		/>
+		<result property="smDate"				column="SM_DATE"			/>
+		<result property="smQty"				column="SM_QTY"				/>			
+		<result property="smBomQty"				column="SM_BOM_QTY"			/>			
+		<result property="barcodeNo"			column="BARCODE_NO"			/>	
+		<result property="sourceNo"				column="SOURCE_NO"			/>		
+		<result property="locationCd"			column="LOCATION_CD"		/>		
+		<result property="locationNm"			column="LOCATION_NM"		/>		
+		<result property="areaCd"				column="AREA_CD"			/>		
+		<result property="floorCd"				column="FLOOR_CD"			/>		
+		<result property="locationNo"			column="LOCATION_NO"		/>		
+		<result property="spDesc"				column="SP_DESC"			/>
+		<result property="regId"				column="REG_ID"				/>
+		<result property="regDate"				column="REG_DATE"			/>
+		<result property="updId"				column="UPD_ID"				/>				
+		<result property="updDate"				column="UPD_DATE"			/>
+		
+		<result property="middlePrcssCd"		column="MIDDLE_PRCSS_CD"	/>
+	</resultMap>
+	
+	<select id="stockMatrlAdmList" resultMap="StockMatrlAdmVo">
+		SELECT 
+			SM_NO,
+			SM_SEQ,
+			SM_TYPE,
+			SM_CD,
+			SM_GUBUN,
+			SM_SUB_GUBUN,
+			SM_DATE,
+			SM_QTY,
+			BARCODE_NO,
+			SOURCE_NO,
+			LOCATION_CD,
+			LOCATION_NO,
+			SM_DESC,
+			SM.REG_ID,
+			SM.REG_DATE,
+			WOP.WORK_ORD_NO,
+			WOP.MIDDLE_PRCSS_CD
+		FROM TB_STOCK_MATRL_ADM SM
+		LEFT OUTER JOIN TB_WORK_ORDER_PRCSS WOP
+		ON SM.SOURCE_NO=WOP.ORD_LOT_NO
+		WHERE 1=1
+		<if test="sourceNo!=null and !sourceNo.equals('')">
+		AND SOURCE_NO=#{sourceNo}
+		</if>
+	</select>
+	
+	<!-- 수불관리 다중등록 -->
+	<insert id="stockMatrlAdmMultiCreate" parameterType="java.util.List">
+	    INSERT INTO TB_STOCK_MATRL_ADM	(
+	    	 SM_NO,
+             SM_SEQ,
+             SM_TYPE,
+             SM_CD,
+             SM_GUBUN,
+             SM_SUB_GUBUN,
+             SM_DATE,
+             SM_QTY,
+             BARCODE_NO,
+             SOURCE_NO,
+             LOCATION_CD,
+             LOCATION_NO,
+             SP_DESC,
+             REG_ID,
+             REG_DATE
+        )
+		VALUES     
+		<foreach collection="list" item="item" separator=" , ">
+		(
+			#{item.smNo},
+            #{item.smSeq},
+            #{item.smType},
+            #{item.smCd},
+            #{item.smGubun},
+            #{item.smSubGubun},
+            #{item.smDate},
+            #{item.smQty},
+            #{item.barcodeNo},
+            #{item.sourceNo},
+            #{item.locationCd},
+            #{item.locationNo},
+            #{item.smDesc},
+            #{item.regId},
+           	GETDATE()
+        )
+		</foreach>
+	</insert>
+	
+	
+	<!-- 수불관리 삭제 -->
+	<delete id="stockMatrlAdmDelete">
+		DELETE FROM TB_STOCK_MATRL_ADM 
+		WHERE 1=1
+		AND SOURCE_NO=#{sourceNo}
+	</delete>
+	
+</mapper>

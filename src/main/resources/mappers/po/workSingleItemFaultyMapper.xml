@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.po.workSingleItemFaultyMapper">
+
+	<resultMap id="WorkSingleItemFaultyVo" type="mes.domain.po.WorkSingleItemFaultyVo">
+	
+		<result property="idx"         	    column="IDX"				/>
+		<result property="workOrdNo"     	column="WORK_ORD_NO"		/>
+		
+		<result property="workProgNo"     	column="WORK_PROG_NO"		/>
+		<result property="upperItemSeq"    	column="UPPER_ITEM_SEQ"		/>
+		<result property="itemSeq"     		column="ITEM_SEQ"			/>
+		<result property="itemCd"     		column="ITEM_CD"			/>
+		<result property="itemNm"     		column="ITEM_NM"			/>
+		<result property="itemModel"     	column="ITEM_MODEL"			/>
+		<result property="itemModelNm"     	column="ITEM_MODEL_NM"		/>
+		
+		<result property="itemGubun"     	column="ITEM_GUBUN"			/>
+		<result property="itemGubunNm"     	column="ITEM_GUBUN_NM"		/>
+		<result property="type"     		column="TYPE"				/>
+		
+		<result property="barcodeNo"     	column="BARCODE_NO"			/>
+	
+		<result property="realQty"     		column="REAL_QTY"			/>
+		<result property="faultyQty"     	column="FAULTY_QTY"			/>
+		<result property="faultyType"     	column="FAULTY_TYPE"		/>
+		<result property="faultyTypeNm"     column="FAULTY_TYPE_NM"		/>
+		<result property="faultyDate"     	column="FAULTY_DATE"		/>
+		<result property="faultyDesc"     	column="FAULTY_DESC"		/>
+		
+		
+		<result property="baseInfoSeq"      column="BASE_INFO_SEQ"		/>
+		<result property="baseInfoType"     column="BASE_INFO_TYPE"		/>
+		<result property="baseInfoGubun"    column="BASE_INFO_GUBUN"	/>
+		<result property="baseInfoGubunNm"  column="BASE_INFO_GUBUN_NM"	/>
+		<result property="baseInfoCd"     	column="BASE_INFO_CD"		/>
+		<result property="baseInfoNm"     	column="BASE_INFO_NM"		/>
+		<result property="totalFaultyQty"   column="TOTAL_FAULTY_QTY"	/>
+		
+		<result property="regId"      		column="REG_ID"				/>
+		<result property="regDate"          column="REG_DATE"			/>
+		<result property="updId"      		column="UPD_ID"				/>
+		<result property="updDate"          column="UPD_DATE"			/>
+	</resultMap>
+	
+	<!-- 단품불량 목록조회 -->
+	<select id="workSingleItemFaultyList" resultMap="WorkSingleItemFaultyVo">
+		SELECT
+			SING.IDX
+			,SING.ITEM_SEQ
+			,SING.WORK_ORD_NO
+			,SING.WORK_PROG_NO
+			,SING.BARCODE_NO
+			,SING.FAULTY_DATE
+			,SING.FAULTY_TYPE
+			, (SELECT BASE_INFO_NM FROM TB_BASE_INFO_ADM WHERE BASE_INFO_TYPE='FT' AND BASE_INFO_CD=SING.FAULTY_TYPE) FAULTY_TYPE_NM
+			,SING.FAULTY_QTY
+		FROM TB_WORK_SINGLE_ITEM_FAULTY SING
+		LEFT OUTER JOIN TB_WORK_ORDER_PROGRESS B
+		ON SING.WORK_ORD_NO=B.WORK_ORD_NO
+		AND SING.WORK_PROG_NO=B.WORK_PROG_NO
+		WHERE 1=1
+		<if test="idx!=null and !idx.equals('')">
+			AND SING.IDX = #{idx}
+		</if>
+		<if test="workOrdNo!=null and !workOrdNo.equals('')">
+			AND SING.WORK_ORD_NO = #{workOrdNo}
+		</if>
+		<if test="workProgNo!=null and !workProgNo.equals('')">
+			AND SING.WORK_PROG_NO = #{workProgNo}
+		</if>
+	</select>
+	
+	<!-- 제품/단품불량 목록조회 -->
+	<select id="workFaultyTypeAllList" resultMap="WorkSingleItemFaultyVo">
+		SELECT
+			IDX 
+			,ITEM_SEQ
+			,ITEM_NM
+			,ITEM_CD
+			,ITEM_GUBUN
+			,ITEM_GUBUN_NM
+			,WORK_ORD_NO
+			,WORK_PROG_NO
+			,BARCODE_NO
+			,FAULTY_DATE
+			,FAULTY_TYPE
+			,FAULTY_TYPE_NM
+			,FAULTY_QTY
+			,TYPE
+		FROM
+		(
+			SELECT
+				SING.IDX 
+				,SING.ITEM_SEQ
+				,IIA.ITEM_CD
+				,IIA.ITEM_NM
+				,IIA.ITEM_GUBUN
+				,(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM
+				,SING.WORK_ORD_NO
+				,SING.WORK_PROG_NO
+				,SING.BARCODE_NO
+				,SING.FAULTY_DATE
+				,SING.FAULTY_TYPE
+				, (SELECT BASE_INFO_NM FROM TB_BASE_INFO_ADM WHERE BASE_INFO_TYPE='FT' AND BASE_INFO_CD=SING.FAULTY_TYPE) FAULTY_TYPE_NM
+				,SING.FAULTY_QTY
+				,'M' TYPE
+			FROM TB_WORK_SINGLE_ITEM_FAULTY SING
+			LEFT OUTER JOIN TB_WORK_ORDER_PROGRESS B
+			ON SING.WORK_ORD_NO=B.WORK_ORD_NO
+			AND SING.WORK_PROG_NO=B.WORK_PROG_NO
+			LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+			ON SING.ITEM_SEQ=IIA.ITEM_SEQ
+			WHERE 1=1
+			AND SING.WORK_ORD_NO = #{workOrdNo}
+			AND SING.WORK_PROG_NO = #{workProgNo}
+		)T
+		UNION ALL
+		(
+			SELECT
+				0 IDX
+				,B.ITEM_SEQ
+				,IIA.ITEM_CD
+				,IIA.ITEM_NM
+				,IIA.ITEM_GUBUN
+				,(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=IIA.ITEM_GUBUN AND X.BASE_GROUP_CD='079') ITEM_GUBUN_NM
+				,A.WORK_ORD_NO
+				, A.MIDDLE_PRCSS_CD WORK_PROG_NO
+				, B.ORD_LOT_NO BARCODE_NO
+				, A.FAULTY_TYPE_DATE FAULTY_DATE
+				, A.FAULTY_TYPE_CD FAULTY_TYPE
+				, (SELECT BASE_INFO_NM FROM TB_BASE_INFO_ADM WHERE BASE_INFO_TYPE='FT' AND BASE_INFO_CD=A.FAULTY_TYPE_CD) FAULTY_TYPE_NM
+				, A.FAULTY_TYPE_QTY FAULTY_QTY
+				,'P' TYPE
+			FROM TB_WORK_ORDER_FAULTY_TYPE A
+			LEFT OUTER JOIN TB_WORK_ORDER_PRCSS B
+			ON A.WORK_ORD_NO=B.WORK_ORD_NO
+			AND A.WORK_ORD_SEQ=B.WORK_ORD_SEQ
+			LEFT OUTER JOIN TB_ITEM_INFO_ADM IIA
+			ON B.ITEM_SEQ=IIA.ITEM_SEQ
+			WHERE 1=1
+			AND A.WORK_ORD_NO = #{workOrdNo}
+			AND A.MIDDLE_PRCSS_CD = #{workProgNo}
+		)
+	</select>
+	
+	
+	<!-- 금일 품목/불량유형별 누적수량 -->
+	<select id="workSingleItemFaultyAccList" resultMap="WorkSingleItemFaultyVo">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY -Z.FAULTY_ORD DESC) AS FAULTY_ORD,
+			T.FAULTY_CD BASE_INFO_CD,
+			T.FAULTY_NM BASE_INFO_NM,
+			ISNULL(Z.USE_YN,'001') USE_YN,
+			ISNULL(WSIF.FAULTY_QTY,0) TOTAL_FAULTY_QTY
+		FROM
+		(
+			SELECT 
+				A.FAULTY_CD,
+				B.BASE_INFO_NM FAULTY_NM
+			FROM TB_PRCSS_FAULTY_ORD_ADM A
+			LEFT OUTER JOIN TB_BASE_INFO_ADM B 
+			ON A.FAULTY_CD=B.BASE_INFO_CD
+			WHERE 1=1
+			AND A.PRCSS_CD=#{minorPrcssCd}
+			AND A.ITEM_SEQ=#{upperItemSeq}
+		
+			UNION 
+			
+			SELECT 
+				BASE_INFO_CD FAULTY_CD
+				, BASE_INFO_NM FAULTY_NM
+			FROM TB_BASE_INFO_ADM A
+			WHERE 1=1
+			AND BASE_INFO_TYPE = 'FT'
+			AND ETC1 = '002' 
+			AND ETC3 = ''
+			AND ( ETC4 LIKE '%' + #{minorPrcssCd} + '%' OR ETC4 IS NULL OR ETC4 = '' )
+			AND BASE_INFO_GUBUN = '003'
+			AND USE_YN = '001'
+		
+		)T LEFT OUTER JOIN TB_PRCSS_FAULTY_ORD_ADM Z
+		ON T.FAULTY_CD=Z.FAULTY_CD
+		AND Z.PRCSS_CD=#{minorPrcssCd}
+		AND Z.ITEM_SEQ=#{upperItemSeq}
+
+		LEFT OUTER JOIN (
+			SELECT ITEM_SEQ, FAULTY_TYPE, SUM(FAULTY_QTY) FAULTY_QTY,FAULTY_DATE
+			FROM TB_WORK_SINGLE_ITEM_FAULTY
+			GROUP BY ITEM_SEQ,FAULTY_TYPE,FAULTY_DATE
+			HAVING 1=1
+			AND FAULTY_DATE = #{faultyDate}
+			AND ITEM_SEQ = #{itemSeq}
+		) WSIF
+		ON T.FAULTY_CD=WSIF.FAULTY_TYPE
+	
+		WHERE 1=1
+		AND ISNULL(Z.USE_YN,'001') = '001'
+		ORDER BY -Z.FAULTY_ORD DESC
+	</select>
+	
+	<!-- 단품불량 등록 -->
+	<insert id="workSingleItemFaultyIns">
+		INSERT INTO TB_WORK_SINGLE_ITEM_FAULTY(
+			WORK_ORD_NO,
+			WORK_PROG_NO,
+			ITEM_SEQ,
+			BARCODE_NO,
+			FAULTY_QTY,
+			FAULTY_TYPE,
+			FAULTY_DATE,
+			FAULTY_DESC,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{workOrdNo},
+			#{workProgNo},
+			#{itemSeq},
+			#{barcodeNo},
+			#{faultyQty},
+			#{faultyType},
+			#{faultyDate},
+			#{faultyDesc},
+			#{regId},
+			GETDATE()
+		)
+	</insert>
+	
+	<!-- 단품불량 삭제 -->
+	<delete id="workSingleItemFaultyDel">
+		DELETE FROM TB_WORK_SINGLE_ITEM_FAULTY
+		WHERE 1=1
+		AND IDX = #{idx}
+	</delete>
+	
+	
+</mapper>

@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.io.purchaseOrderReturnMapper">
+
+	<resultMap id="PurchaseOrderReturnVo" type="mes.domain.io.PurchaseOrderReturnVo">
+		<result property="retnNo"				column="RETN_NO"				/>
+		<result property="retnSeq"				column="RETN_SEQ"				/>
+		<result property="poNo"					column="PO_NO"				/>
+		<result property="poSeq"				column="PO_SEQ"				/>
+		<result property="inSeq"				column="IN_SEQ"				/>
+		<result property="partCd"		    	column="PART_CD"			/>
+		<result property="partNm"		    	column="PART_NM"			/>
+		<result property="partRev"		        column="PART_REV"			/>
+		<result property="partGubun"			column="PART_GUBUN"			/>	
+		<result property="partGubunNm"			column="PART_GUBUN_NM"		/>	
+		<result property="returnType"			column="RETURN_TYPE"		/>			
+		<result property="returnTypeNm"			column="RETURN_TYPE_NM"		/>				
+		<result property="returnDate"			column="RETURN_DATE"		/>
+		<result property="returnQty"			column="RETURN_QTY"			/>
+		<result property="faultyCnt"			column="FAULTY_CNT"			/>
+		<result property="returnChargr"			column="RETURN_CHARGR"		/>
+		<result property="returnChargrNm"		column="RETURN_CHARGR_NM"	/>
+		<result property="returnDesc"			column="RETURN_DESC"		/>
+		<result property="approvalCd"			column="APPROVAL_CD"		/>	
+		<result property="approvalNm"			column="APPROVAL_NM"		/>			
+		<result property="inspectChargrNm"		column="INSPECT_CHARGR_NM"	/>
+		<result property="faultyRegDate"		column="FAULTY_REG_DATE"	/>
+		<result property="receiptGubun"			column="RECEIPT_GUBUN"		/>
+		<result property="dealCorpCd"			column="DEAL_CORP_CD"		/>	
+		<result property="dealCorpNm"			column="DEAL_CORP_NM"		/>	
+		<result property="telNo"				column="TEL_NO"				/>	
+		<result property="addrBase"				column="ADDR_BASE"			/>
+		<result property="addrDtl"				column="ADDR_DTL"			/>
+		<result property="fileName"				column="FILE_NAME"			/>
+		<result property="fileType"				column="FILE_TYPE"			/>
+		
+		<result property="regId"				column="REG_ID"				/>
+		<result property="regDate"				column="REG_DATE"			/>
+		<result property="updId"				column="UPD_ID"				/>
+		<result property="updDate"				column="UPD_DATE"			/>
+		
+		<result property="startDate"			column="START_DATE"			/>
+		<result property="endDate"				column="END_DATE"			/>
+		
+		<result property="value"				column="VALUE"				/>
+		<result property="faultyTypeQty"		column="FAULTY_TYPE_QTY"	/>
+		<result property="faultyTypeDate"		column="FAULTY_TYPE_DATE"	/>
+		
+		<result property="faultyChargr"			column="FAULTY_CHARGR"		/>
+		<result property="faultyChargrNm"		column="FAULTY_CHARGR_NM"	/>
+	</resultMap>	
+
+	<!--반품등록 마스터 목록조회 -->
+	<select id="purchaseOrderReturnMasterList" resultMap="PurchaseOrderReturnVo">
+		SELECT 
+			RETN_NO,
+			FILE_NAME,
+			FILE_TYPE,
+			SUM(RETURN_QTY) RETURN_QTY,
+			RETURN_DATE,
+			RETURN_DESC,
+			RETURN_CHARGR,
+			APPROVAL_CD,
+			(SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=APPROVAL_CD AND X.BASE_GROUP_CD='062') APPROVAL_NM,
+			(SELECT USER_NM FROM TB_USER X WHERE X.USER_NUMBER=RETURN_CHARGR) RETURN_CHARGR_NM
+		FROM TB_PURCHASE_ORDER_RETURN
+		GROUP BY RETN_NO ,RETURN_DATE,RETURN_DESC,RETURN_CHARGR,APPROVAL_CD,FILE_NAME,FILE_TYPE
+		<if test="startDate!=null and !startDate.equals('')">
+			HAVING RETURN_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+
+	</select>
+	
+	
+	<!--반품등록 목록조회  -->
+	<select id="purchaseOrderReturnDetailList" resultMap="PurchaseOrderReturnVo">
+		<![CDATA[ 
+			SELECT A. PO_NO 		
+				, A.PO_SEQ 		
+				, A.IN_SEQ 		
+				, A.PART_CD 	
+				, (SELECT PART_NM FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_NM
+				, (SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_GUBUN
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) AND X.BASE_GROUP_CD='035')PART_GUBUN_NM
+				, A.PART_REV 
+				, A.REG_ID 
+				, RETURN_QTY 	
+				, APPROVAL_CD 
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=A.APPROVAL_CD AND X.BASE_GROUP_CD='062')APPROVAL_NM
+				, B.DEAL_CORP_CD
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.DEAL_CORP_CD) DEAL_CORP_NM
+			FROM  TB_PURCHASE_ORDER_RETURN A, TB_PURCHASE_ORDER_ADM B
+			WHERE A.PO_NO=B.PO_NO
+			AND A.RETN_NO=#{retnNo}
+		]]>
+	</select>
+	
+	<!--반품등록 마스터 목록조회 -->
+	<select id="purchaseOrderReturnList" resultMap="PurchaseOrderReturnVo">
+		SELECT A. PO_NO 		
+				, A.PO_SEQ 		
+				, A.IN_SEQ 		
+				, A.PART_CD 	
+				, (SELECT PART_NM FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_NM
+				, (SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_GUBUN
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=(SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) AND X.BASE_GROUP_CD='035')PART_GUBUN_NM
+				, A.PART_REV 
+				, A.REG_ID 
+				, RETURN_QTY 	
+				, APPROVAL_CD 
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=A.APPROVAL_CD AND X.BASE_GROUP_CD='062')APPROVAL_NM
+				, B.DEAL_CORP_CD
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.DEAL_CORP_CD) DEAL_CORP_NM
+				, A.RETURN_DATE
+			FROM  TB_PURCHASE_ORDER_RETURN A, TB_PURCHASE_ORDER_ADM B
+			WHERE A.PO_NO=B.PO_NO
+			<if test="startDate!=null and !startDate.equals('')">
+				AND RETURN_DATE BETWEEN #{startDate} AND #{endDate}
+			</if>
+
+	</select>
+	
+	
+	<!--반품등록 상세조회  -->
+	<select id="purchaseOrderReturnRead" resultMap="PurchaseOrderReturnVo">
+		<![CDATA[
+			SELECT 
+				A.PO_NO
+				, A.PO_SEQ
+				, A.IN_SEQ
+				, A.PART_CD 	
+				, A.PART_REV
+				, A.FILE_TYPE 	
+				, A.FILE_NAME
+				, (SELECT PART_NM FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_NM
+				, A.PART_GUBUN
+				, A.REG_ID
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=A.PART_GUBUN AND X.BASE_GROUP_CD='035')PART_GUBUN_NM
+				, RETURN_TYPE 
+				, (SELECT BASE_INFO_NM FROM TB_BASE_INFO_ADM WHERE BASE_INFO_CD=A.RETURN_TYPE AND BASE_INFO_TYPE='FT') RETURN_TYPE_NM
+				, C.FAULTY_TYPE_QTY FAULTY_CNT
+				, RETURN_DATE 
+				, RETURN_QTY 	
+				, RETURN_DESC 
+				, B.DEAL_CORP_CD
+				, A.APPROVAL_CD
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.DEAL_CORP_CD) DEAL_CORP_NM
+				, (SELECT TEL_NO FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.DEAL_CORP_CD) TEL_NO
+				, (SELECT ADDR_BASE FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.DEAL_CORP_CD) ADDR_BASE
+			FROM  TB_PURCHASE_ORDER_RETURN A
+			LEFT OUTER JOIN TB_PURCHASE_ORDER_ADM B
+			ON A.PO_NO=B.PO_NO
+			LEFT OUTER JOIN TB_ITEM_INSPECT_FAULTY_TYPE C
+			ON A.PO_NO=C.PO_NO
+			AND A.PO_SEQ=C.PO_SEQ
+			AND A.IN_SEQ=C.IN_SEQ
+			AND A.RETURN_TYPE=C.FAULTY_TYPE_CD
+			WHERE A.RETN_NO=#{retnNo}
+		]]>
+	</select>
+	
+	<!-- 반품 등록 -->
+	<insert id="purchaseOrderReturnCreate">
+		<![CDATA[
+			INSERT INTO TB_PURCHASE_ORDER_RETURN		(
+				RETN_NO,
+				RETN_SEQ,
+				PO_NO,
+				PO_SEQ,
+				IN_SEQ,
+				PART_CD,
+				PART_REV,
+				FILE_NAME,
+				FILE_TYPE,
+				RETURN_DATE,
+				RETURN_QTY,
+				RETURN_DESC,
+				RETURN_CHARGR,
+				APPROVAL_CD,
+				REG_ID,
+				REG_DATE
+			) 
+			VALUES(
+				#{retnNo},
+				#{retnSeq},
+				#{poNo},
+				#{poSeq},
+				#{inSeq},
+				#{partCd},
+				#{partRev},
+				#{fileName},
+				#{fileType},
+				#{returnDate},
+				#{returnQty},
+				#{returnDesc},
+				#{returnChargr},
+				#{approvalCd},
+				#{regId},
+				getDate()
+			)
+		]]>
+	</insert>
+
+	<!-- 반품수정 -->
+	<update id="purchaseOrderReturnUpdate">
+		<![CDATA[
+			UPDATE	TB_PURCHASE_ORDER_RETURN		 
+			SET	
+				FILE_NAME = #{fileName},
+				FILE_TYPE = #{fileType},
+				RETURN_DATE = #{returnDate},
+				RETURN_QTY = #{returnQty},
+				RETURN_DESC = #{returnDesc},
+				UPD_ID = #{updId},
+				UPD_DATE = getDate()
+			WHERE	PO_NO = #{poNo}
+			AND	PO_SEQ = #{poSeq}
+			AND	IN_SEQ = #{inSeq}
+		]]>
+	</update>
+	
+	<!-- 반품삭제 -->
+	<delete id="purchaseOrderReturnDelete">
+		<![CDATA[
+			DELETE FROM TB_PURCHASE_ORDER_RETURN 
+			WHERE RETN_NO = #{retnNo}
+		]]>
+	</delete>
+	
+	
+	<!-- 승인여부 수정 -->
+	<update id="updateApprovalCd">
+		<![CDATA[
+			UPDATE TB_PURCHASE_ORDER_RETURN SET APPROVAL_CD = #{approvalCd} WHERE RETN_NO=#{retnNo}
+		]]>
+	</update>
+	
+	<!-- 뱐품등록 실사량,반품수량 수정 -->
+	<update id="updateReturnQty">
+		UPDATE TB_IN_OUT_WHS_ADM 
+		<set>
+			<if test='value.equals("1")'>
+			  RETURN_QTY = RETURN_QTY + #{returnQty}
+			, INSPECT_QTY = (INSPECT_QTY+FAULTY_QTY)-#{returnQty}
+			</if>
+			<if test='value.equals("2")'>
+			  RETURN_QTY = RETURN_QTY - #{returnQty}
+			, INSPECT_QTY = (INSPECT_QTY+#{returnQty})-FAULTY_QTY
+			</if>
+		</set>
+		WHERE PO_NO = #{poNo}
+		AND PO_SEQ = #{poSeq}
+		AND IN_SEQ = #{inSeq}
+	</update>
+	
+	
+	<!-- 불량수량값 가져오기 -->
+	<select id="getFaultyQty" resultType="Integer">
+		<![CDATA[
+			SELECT FAULTY_QTY FROM TB_IN_OUT_WHS_ADM A WHERE A.PO_NO=#{poNo} AND A.PO_SEQ=#{poSeq} AND IN_SEQ=#{inSeq}
+		]]>
+	</select>
+	
+	<!-- 반품 중복확인 -->
+	<select id="overlapPoNo" resultType="Integer">
+		<![CDATA[
+			SELECT COUNT(*) FROM TB_PURCHASE_ORDER_RETURN A WHERE A.PO_NO=#{poNo} AND A.PO_SEQ=#{poSeq} AND IN_SEQ=#{inSeq}
+		]]>
+	</select>
+	
+	
+	<!-- 반품등록 발주번호 팝업목록조회 -->
+	<select id="itemFaultyAdmPopupList" resultMap="PurchaseOrderReturnVo">
+		<![CDATA[
+			SELECT A.PO_NO,
+				A.PO_SEQ,
+				A.IN_SEQ,
+				A.PART_CD,
+				A.PART_REV,
+				A.REG_ID,
+				(SELECT PART_NM FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) PART_NM,
+				(SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV)PART_GUBUN,
+				(SELECT BASE_NM FROM TB_COMMON_CODE_ADM WHERE BASE_CD=(SELECT PART_GUBUN FROM TB_ITEM_PART_ADM X WHERE X.PART_CD=A.PART_CD AND X.PART_REV=A.PART_REV) AND BASE_GROUP_CD='035') PART_GUBUN_NM,
+				B.FAULTY_CHARGR,
+				(SELECT USER_NM FROM TB_USER X WHERE X.USER_NUMBER=B.FAULTY_CHARGR) FAULTY_CHARGR_NM,
+				B.FAULTY_CNT,
+				B.RETURN_QTY,
+				B.RETURN_DATE,
+				D.DEAL_CORP_CD,
+				(SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE DEAL_CORP_CD=D.DEAL_CORP_CD) DEAL_CORP_NM,
+				(SELECT TEL_NO FROM TB_DEAL_CORP_ADM X WHERE DEAL_CORP_CD=D.DEAL_CORP_CD) TEL_NO,
+				(SELECT ADDR_BASE FROM TB_DEAL_CORP_ADM X WHERE DEAL_CORP_CD=D.DEAL_CORP_CD) ADDR_BASE,
+				(SELECT ADDR_DTL FROM TB_DEAL_CORP_ADM X WHERE DEAL_CORP_CD=D.DEAL_CORP_CD) ADDR_DTL
+			FROM TB_ITEM_INSPECT_ADM A
+			INNER JOIN TB_ITEM_FAULTY_JDG_ADM B
+			ON A.PO_NO=B.PO_NO
+			AND A.PO_SEQ=B.PO_SEQ
+			AND A.IN_SEQ=B.IN_SEQ
+			INNER JOIN TB_PURCHASE_ORDER_ADM D
+			ON A.PO_NO=D.PO_NO
+			LEFT OUTER JOIN TB_PURCHASE_ORDER_RETURN C
+			ON B.PO_NO=C.PO_NO
+			AND B.PO_SEQ=C.PO_SEQ
+			AND B.IN_SEQ=C.IN_SEQ
+			WHERE C.RETN_NO IS NULL
+			AND B.RETURN_QTY>0
+		]]>
+	</select>
+	
+	<!--반품번호 가져오기(001) -->
+	<select id="getRetnNo" resultType="String">
+		SELECT ISNULL(RIGHT('000' + CAST(MAX(RIGHT(RETN_NO,3))+1 AS NVARCHAR),3), '001') FROM TB_PURCHASE_ORDER_RETURN  WHERE SUBSTRING(RETN_NO,0,9) = #{date}
+	</select>
+	
+	<!-- 반품 시퀀스 가져오기 -->
+	<select id="getRetnSeq" resultType="Integer">
+		SELECT ISNULL(MAX(RETN_SEQ)+1,0) FROM TB_PURCHASE_ORDER_RETURN WHERE RETN_NO = #{retnNo}
+	</select>
+	
+	<!-- 승인여부 확인 -->
+	<select id="getApprovalCd" resultType="String">
+		SELECT 
+			APPROVAL_CD
+		FROM  TB_PURCHASE_ORDER_RETURN A
+		GROUP BY RETN_NO , APPROVAL_CD
+		HAVING RETN_NO=#{retnNo}
+	</select>
+	
+</mapper>

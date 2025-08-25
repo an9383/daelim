@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.bs.deliveryProcDtlMapper">
+	
+	<resultMap id="DeliveryProcDtlVo" type="mes.domain.bs.DeliveryProcDtlVo">
+		<result property="doNo"			column="DO_NO"				/>
+		<result property="doSeq"		column="DO_SEQ"				/>
+		<result property="doDtlSeq"		column="DO_DTL_SEQ"			/>
+		<result property="itemCd"		column="ITEM_CD"			/>
+		<result property="itemRev"		column="ITEM_SEQ"			/>
+		<result property="itemSeq"		column="ITEM_REV"			/>
+		<result property="itemNm"		column="ITEM_NM"			/>
+		<result property="itemGubun"	column="ITEM_GUBUN"			/>
+		<result property="itemGubunNm"	column="ITEM_GUBUN_NM"		/>
+		<result property="barcodeNo"	column="BARCODE_NO"			/>
+		<result property="outputDtlQty"	column="OUTPUT_DTL_QTY"		/>
+		<result property="remainDtlQty"	column="REMAIN_DTL_QTY"		/>
+		<result property="doDtlDate"	column="DO_DTL_DATE"		/>
+		<result property="doDtlDesc"	column="DO_DTL_DESC"		/>
+		
+		<result property="doDate"		column="DO_DATE"			/>
+		<result property="dlvDate"		column="DLV_DATE"			/>
+		<result property="doStatus"		column="DO_STATUS"			/>
+		<result property="doStatusNm"	column="DO_STATUS_NM"		/>
+		<result property="ordGubun"		column="ORD_GUBUN"			/>
+		<result property="ordGubunNm"	column="ORD_GUBUN_NM"		/>
+		<result property="poCorpCd"		column="PO_CORP_CD"			/>
+		<result property="poCorpNm"		column="PO_CORP_NM"			/>
+		<result property="targetQty"	column="TARGET_QTY"			/>
+		<result property="outputQty"	column="OUTPUT_QTY"			/>
+		<result property="remainQty"	column="REMAIN_QTY"			/>
+		<result property="doCorpCd"		column="DO_CORP_CD"			/>
+		<result property="doCorpNm"		column="DO_CORP_NM"			/>
+		<result property="regId"		column="REG_ID"				/>
+		<result property="regDate"		column="REG_DATE"			/>
+		<result property="updId"		column="UPD_ID"				/>
+		<result property="updDate"		column="UPD_DATE"			/>
+		
+		<result property="startDate"  	column="START_DATE"			/>
+		<result property="endDate"  	column="END_DATE"			/>
+		
+	</resultMap>
+
+	<!-- 출고처리 목록조회 -->
+	<select id="deliveryProcDtlList" resultMap="DeliveryProcDtlVo">
+		<![CDATA[
+			SELECT 
+				A.DO_NO
+				, B.DO_SEQ
+				, A.DO_DATE
+				, A.ORD_GUBUN
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=A.ORD_GUBUN AND X.BASE_GROUP_CD='058') ORD_GUBUN_NM
+				, B.PO_CORP_CD
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=B.PO_CORP_CD) PO_CORP_NM
+				, B.ITEM_CD
+				, B.ITEM_REV 
+				, (SELECT ITEM_NM FROM TB_ITEM_MOTOR_ADM X WHERE X.ITEM_CD=B.ITEM_CD AND X.ITEM_REV=B.ITEM_REV) ITEM_NM
+				, B.TARGET_QTY
+				, B.OUTPUT_QTY
+				, B.REMAIN_QTY
+				, B.DLV_DATE
+				, A.DO_CORP_CD 
+				, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=A.DO_CORP_CD) DO_CORP_NM
+			FROM TB_DELIVERY_ORDER_ADM A , TB_DELIVERY_ORDER_DTL B
+			WHERE A.DO_NO=B.DO_NO
+			AND DO_STATUS != '001'
+			AND DO_DATE BETWEEN #{startDate} AND #{endDate}
+		]]>
+	</select>
+	
+	<!-- 출고처리 상세조회 -->
+	<select id="deliveryProcDtlRead" resultMap="DeliveryProcDtlVo">
+			SELECT 
+				A.DO_NO
+				, A.DO_SEQ
+			 	, A.DO_DTL_SEQ
+			 	, A.BARCODE_NO
+				, A.ITEM_SEQ
+			 	, B.ITEM_CD
+			 	, A.OUTPUT_DTL_QTY
+			 	, A.DO_DTL_DATE
+			 	, A.DO_DTL_DESC
+			FROM TB_DELIVERY_PROC_DTL A 
+			LEFT JOIN TB_ITEM_INFO_ADM B 
+			ON A.ITEM_SEQ = B.ITEM_SEQ
+			WHERE 1=1
+			AND DO_NO = #{doNo}
+			AND DO_SEQ = #{doSeq}
+	</select>
+	
+	<!-- 출고처리 등록 -->
+	<insert id="deliveryProcDtlCreate">
+			INSERT INTO TB_DELIVERY_PROC_DTL	(
+				DO_NO,
+				DO_SEQ,
+				DO_DTL_SEQ,
+				ITEM_SEQ,
+				BARCODE_NO,
+				OUTPUT_DTL_QTY,
+				DO_DTL_DATE,
+				DO_DTL_DESC,
+				REG_ID,
+				REG_DATE
+			) 
+			VALUES(
+				#{doNo},
+				#{doSeq},
+				#{doDtlSeq},
+				#{itemSeq},
+				#{barcodeNo},
+				#{outputDtlQty},
+				#{doDtlDate},
+				#{doDtlDesc},
+				#{regId},
+				getDate()
+			)
+	</insert>
+	
+	<!-- 출고처리 수정 -->
+	<update id="deliveryProcDtlUpdate">
+		<![CDATA[
+			UPDATE	TB_DELIVERY_PROC_DTL							 
+			SET	
+				DO_DTL_SEQ = #{doDtlSeq},
+				ITEM_CD = #{itemCd},
+				ITEM_REV = #{itemRev},
+				BARCODE_NO = #{barcodeNo},
+				OUTPUT_DTL_QTY = #{outputDtlQty},
+				REMAIN_DTL_QTY = #{remainDtlQty},
+				DO_DTL_DATE = #{doDtlDate},
+				DO_DTL_DESC = #{doDtlDesc},
+				UPD_ID = #{updId},
+				UPD_DATE = getDate()
+			WHERE	DO_NO = #{doNo}
+			AND	DO_SEQ = #{doSeq}
+		]]>
+	</update>
+	
+	<!-- 출고처리 삭제 -->
+	<delete id="deliveryProcDtlDelete">
+			DELETE FROM TB_DELIVERY_PROC_DTL							 
+			WHERE	DO_NO = #{doNo}
+			AND	DO_SEQ = #{doSeq}
+	</delete>
+	
+	<!-- 출고처리 상세 시퀀스 -->
+	<select id="getDoDtlSeq" resultType="Integer">
+		<![CDATA[
+			SELECT ISNULL(MAX(DO_DTL_SEQ)+1,1) FROM TB_DELIVERY_PROC_DTL WHERE DO_NO = #{doNo} AND DO_SEQ = #{doSeq}
+		]]>
+	</select>
+	
+	<!-- 출고의뢰상세 수정 -->
+	<update id="deliveryOrderDtlUpdate">
+		UPDATE  TB_DELIVERY_ORDER_DTL 
+		SET 
+			OUTPUT_QTY = #{outputQty}, 
+			REMAIN_QTY = #{remainQty},
+			DO_STATUS = #{doStatus}
+		WHERE DO_NO = #{doNo} 
+		AND DO_SEQ = #{doSeq}
+	</update>
+	
+	<!-- 출고의뢰상세 남은수량 가져오기 -->
+	<select id="getRemainQty" resultType="Integer">
+		SELECT REMAIN_QTY FROM TB_DELIVERY_ORDER_DTL WHERE DO_NO=#{doNo} AND DO_SEQ=#{doSeq}
+	</select>
+	
+	
+	<!-- 바코드별 제품출고 모니터링 조회 -->
+	<select id="itemWhsAdmMonitoringList" resultMap="DeliveryProcDtlVo">
+		SELECT 
+			A.BARCODE_NO,
+			B.ITEM_CD,
+			B.ITEM_REV,
+			Z.ITEM_NM,
+			B.TARGET_QTY,
+			A.OUTPUT_DTL_QTY,
+			D.REMAIN_QTY,
+			B.DLV_DATE,
+			C.DO_CORP_CD,
+			(SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD=C.DO_CORP_CD)DO_CORP_NM,
+			C.DO_DATE
+		FROM TB_ITEM_MOTOR_ADM Z 
+		INNER JOIN TB_DELIVERY_PROC_DTL A
+		ON Z.ITEM_CD=A.ITEM_CD
+		AND Z.ITEM_REV=A.ITEM_REV
+		INNER JOIN TB_DELIVERY_ORDER_DTL B
+		ON A.DO_NO=B.DO_NO
+		AND A.DO_SEQ=B.DO_SEQ
+		INNER JOIN TB_DELIVERY_ORDER_ADM C
+		ON B.DO_NO=C.DO_NO
+		LEFT OUTER JOIN TB_ITEM_WHS_ADM D
+		ON A.BARCODE_NO=D.BARCODE_NO
+		WHERE A.BARCODE_NO=#{barcodeNo}
+	</select>
+	
+	
+</mapper>

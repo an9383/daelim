@@ -1,0 +1,497 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mes.mappers.bs.takeOffAdmMapper">
+    
+    <resultMap id="TakeOffAdmVo" type="mes.domain.bs.TakeOffAdmVo">
+        <result property="idx"				column="IDX"				/>
+        <result property="itemSeq"			column="ITEM_SEQ"			/>
+        <result property="barcodeNo"		column="BARCODE_NO" 		/>
+        <result property="toQty"			column="TO_QTY" 			/>
+        <result property="beforeLocNo"		column="BEFORE_LOC_NO"		/>
+        <result property="beforeLocCd"		column="BEFORE_LOC_CD"		/>
+        <result property="afterLocNo"		column="AFTER_LOC_NO"		/>
+        <result property="afterLocCd"		column="AFTER_LOC_CD"		/>
+        <result property="itemLocNo"		column="ITEM_LOC_NO"		/>
+        <result property="itemLocCd"		column="ITEM_LOC_CD"		/>
+        <result property="toDate"			column="TO_DATE" 			/>
+        <result property="toWorker"			column="TO_WORKER"			/>
+        <result property="prcssYn"			column="PRCSS_YN"			/>
+        <result property="fairQty"			column="FAIR_QTY"			/>
+        <result property="faultyQty"		column="FAULTY_QTY"			/>
+        <result property="regId"			column="REG_ID" 			/>
+        <result property="regDate"			column="REG_DATE"			/>
+        <result property="updId"			column="UPD_ID" 			/>
+        <result property="updDate"			column="UPD_DATE"			/>
+        <result property="itemCusNm"		column="ITEM_CUS_NM"		/>
+        <result property="itemModelNm"		column="ITEM_MODEL_NM"		/>
+        <result property="itemCd"			column="ITEM_CD"			/>
+        <result property="itemNm"			column="ITEM_NM"			/>
+        <result property="itemGubun"		column="ITEM_GUBUN"			/>
+        <result property="itemModel"		column="ITEM_MODEL"			/>
+        <result property="locationNm"		column="LOCATION_NM"		/>
+        <result property="areaNm"			column="AREA_NM"			/>
+        <result property="locationNo"		column="LOCATION_NO"		/>
+        <result property="locationCd"		column="LOCATION_CD"		/>
+        <result property="areaCd"			column="AREA_CD"			/>
+        <result property="floorNm"			column="FLOOR_NM"			/>
+        <result property="toRegDate"		column="TO_REG_DATE"		/>
+        <result property="prRegDate"		column="PR_REG_DATE"		/>
+        <result property="toWorkerNm"		column="TO_WORKER_NM"		/>
+        <result property="itemUnitNm"		column="ITEM_UNIT_NM"		/>
+        <result property="outputDate"		column="OUTPUT_DATE"		/>
+        <result property="workEndTime"		column="WORK_END_TIME"		/>
+    </resultMap>
+    
+    <!-- 반출등록 그룹 조회 -->  
+	<select id="takeOffAdmGroupList" resultMap="TakeOffAdmVo">
+		SELECT
+			TA_TB.ITEM_SEQ
+			, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = IIA_TB.ITEM_CUS) ITEM_CUS_NM
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND IIA_TB.ITEM_MODEL = X.BASE_CD) ITEM_MODEL_NM
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, TA_TB.TO_DATE
+			, SUM( CONVERT(INT, TA_TB.TO_QTY) ) TO_QTY
+		FROM TB_TAKEOFF_ADM TA_TB
+		INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON TA_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+		WHERE 1=1
+		<if test="startDate != null and startDate != ''">
+		AND TA_TB.TO_DATE BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="itemCus != null and itemCus != ''">
+		AND IIA_TB.ITEM_CUS = #{itemCus}
+		</if>
+		<if test="mainGubun != null and mainGubun != ''">
+		AND IIA_TB.MAIN_GUBUN = #{mainGubun}
+		</if>
+		GROUP BY
+			TA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_CUS
+			, IIA_TB.ITEM_MODEL
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, TA_TB.TO_DATE
+	</select>
+    
+    <!-- 반출등록 상세 조회 -->  
+	<select id="takeOffAdmList" resultMap="TakeOffAdmVo">
+		SELECT
+			TA_TB.IDX
+			, TA_TB.ITEM_SEQ
+			, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = IIA_TB.ITEM_CUS) ITEM_CUS_NM
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND X.BASE_CD = IIA_TB.ITEM_MODEL) ITEM_MODEL_NM
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '036' AND X.BASE_CD = IIA_TB.ITEM_UNIT) ITEM_UNIT_NM
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, TA_TB.BARCODE_NO
+			, TA_TB.TO_QTY
+			, TA_TB.BEFORE_LOC_NO
+			, (SELECT X.LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO = TA_TB.BEFORE_LOC_NO) BEFORE_LOC_CD
+			, TA_TB.AFTER_LOC_NO
+			, (SELECT X.LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO = TA_TB.AFTER_LOC_NO) AFTER_LOC_CD
+			, IIA_TB.LOC_NO ITEM_LOC_NO
+			, (SELECT X.LOC_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO = IIA_TB.LOC_NO) ITEM_LOC_CD
+			, TA_TB.TO_DATE
+			, TA_TB.TO_WORKER
+			, (SELECT X.USER_NM FROM TB_USER X WHERE X.USER_NUMBER = TA_TB.TO_WORKER) TO_WORKER_NM
+			, TA_TB.PRCSS_YN
+			, TA_TB.FAIR_QTY
+			, TA_TB.FAULTY_QTY
+			, TA_TB.REG_ID
+			, TA_TB.REG_DATE
+			, TA_TB.UPD_ID
+			, TA_TB.UPD_DATE
+			, TO_SPA.REG_DATE TO_REG_DATE
+			, PR_SPA.REG_DATE PR_REG_DATE
+		FROM TB_TAKEOFF_ADM TA_TB
+		
+		INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON TA_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+		
+		INNER JOIN TB_STOCK_PAYMENT_ADM TO_SPA --반출등록시 생성되는 수불 데이터
+		ON CONCAT('bssc0241_TO_', TA_TB.IDX) = TO_SPA.SOURCE_NO
+		AND TO_SPA.SP_GUBUN = '001'
+
+		LEFT OUTER JOIN TB_STOCK_PAYMENT_ADM PR_SPA --반출처리시 생성되는 수불 데이터
+		ON CONCAT('bssc0241_PR_', TA_TB.IDX) = PR_SPA.SOURCE_NO
+		AND PR_SPA.SP_GUBUN = '001'
+		
+		WHERE 1=1
+		<if test="itemSeq != null and itemSeq != ''">
+		AND TA_TB.ITEM_SEQ = #{itemSeq}
+		</if>
+		<if test="toDate != null and toDate != ''">
+		AND TA_TB.TO_DATE = #{toDate}
+		</if>
+		<if test="idxList != null and idxList != ''">
+		AND TA_TB.IDX IN ( ${idxList} )
+		</if>
+		<if test="prcssYn != null and prcssYn != ''">
+		AND TA_TB.PRCSS_YN = #{prcssYn}
+		</if>
+		
+		ORDER BY TA_TB.REG_DATE DESC
+	</select>
+	
+	<!-- 반출등록(사출) 추가 조회 -->
+	<select id="takeOffInjectList" resultMap="TakeOffAdmVo">
+		SELECT
+			DOD_TB.PO_CORP_CD ITEM_CUS
+			, (SELECT X.DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = DOD_TB.PO_CORP_CD) ITEM_CUS_NM
+			, DOD_TB.OUTPUT_DATE
+			, (CASE WHEN CONVERT(VARCHAR, WOP_TB.WORK_START_TIME, 8) BETWEEN '00:00:00' AND '08:30:00' THEN CONVERT(VARCHAR,DATEADD(DAY,-1, CONVERT(CHAR(8), WOP_TB.WORK_START_TIME, 112)),112) ELSE CONVERT(CHAR(8), WOP_TB.WORK_START_TIME, 112) END) WORK_END_TIME
+			, IIA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_MODEL
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = IIA_TB.ITEM_MODEL AND X.BASE_GROUP_CD = '099') ITEM_MODEL_NM
+			, DOD_TB.LOT_NO BARCODE_NO
+			, SUM(DOD_TB.OUTPUT_QTY) TO_QTY
+		FROM TB_DELIVERY_ORDER_DTL DOD_TB
+
+		INNER JOIN TB_WORK_ORDER_PRCSS WOP_TB
+		ON DOD_TB.LOT_NO = WOP_TB.ORD_LOT_NO
+
+		INNER JOIN TB_ITEM_INFO_ADM IIA_TB
+		ON DOD_TB.ITEM_SEQ = IIA_TB.ITEM_SEQ
+
+		WHERE 1=1
+		AND IIA_TB.ITEM_GUBUN = '001' --제품만 조회
+		<if test="mainGubun != null and mainGubun != ''">
+		AND IIA_TB.MAIN_GUBUN = #{mainGubun}
+		</if>
+		<if test="itemCusList != null and itemCusList != ''">
+		AND DOD_TB.PO_CORP_CD IN ( ${itemCusList} )
+		</if>
+
+		GROUP BY
+			DOD_TB.PO_CORP_CD
+			, WOP_TB.WORK_START_TIME
+			, DOD_TB.OUTPUT_DATE
+			, IIA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_MODEL
+			, DOD_TB.LOT_NO
+		ORDER BY DOD_TB.LOT_NO
+	</select>
+	
+	<!-- 반출등록(봉제) 고객사 조회 -->  
+	<select id="takeOffCustomerList" resultMap="TakeOffAdmVo">
+		SELECT
+			IIA_TB.ITEM_SEQ
+			, IIA_TB.ITEM_CD
+			, IIA_TB.ITEM_NM
+			, IIA_TB.ITEM_GUBUN
+			, IIA_TB.ITEM_MODEL
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '099' AND IIA_TB.ITEM_MODEL = X.BASE_CD) ITEM_MODEL_NM
+			, LA_TB.LOC_NO LOCATION_NO
+			, LA_TB.LOC_CD LOCATION_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '073' AND X.BASE_CD = LA_TB.LOC_CD ) LOCATION_NM
+			, LA_TB.AREA_CD
+			, (SELECT X.BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_GROUP_CD = '067' AND X.BASE_CD = LA_TB.AREA_CD) AREA_NM
+			, LA_TB.FLOOR_NM
+		FROM TB_ITEM_INFO_ADM IIA_TB
+		LEFT OUTER JOIN TB_LOCATION_ADM LA_TB
+		ON IIA_TB.LOC_NO = LA_TB.LOC_NO
+		WHERE 1=1
+		AND IIA_TB.ITEM_GUBUN = '001' --제품만 조회
+		<if test="mainGubun != null and mainGubun != ''">
+		AND IIA_TB.MAIN_GUBUN = #{mainGubun}
+		</if>
+		<if test="itemCusList != null and itemCusList != ''">
+		AND IIA_TB.ITEM_CUS IN ( ${itemCusList} )
+		</if>
+	</select>
+	
+	<!-- 반출등록(봉제) 외주사 조회 -->  
+	<select id="takeOffOutsourcingList" resultMap="TakeOffAdmVo">
+		SELECT
+			ITEM_SEQ
+			, BARCODE_NO
+			, LOCATION_NO
+			, LOCATION_CD
+			, LOCATION_NM
+			, AREA_CD
+			, AREA_NM
+			, FLOOR_NM
+			, ITEM_GUBUN
+			, ITEM_CD
+			, ITEM_NM
+			, ITEM_MODEL
+			, ITEM_MODEL_NM
+			, REAL_QTY TO_QTY
+		FROM (
+			SELECT
+				DD.ITEM_SEQ
+				, EE.BARCODE_NO
+				, EE.LOCATION_NO
+				, EE.LOCATION_CD
+				, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM B WHERE BASE_GROUP_CD = '073' AND B.BASE_CD = EE.LOCATION_CD ) LOCATION_NM
+				, (SELECT AREA_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO = EE.LOCATION_NO) AREA_CD
+				, (
+					SELECT BASE_NM 
+					FROM (
+					SELECT BASE_CD,BASE_NM FROM TB_COMMON_CODE_ADM WHERE BASE_GROUP_CD='067'
+					UNION 
+					SELECT DEAL_CORP_CD BASE_CD, DEAL_CORP_NM BASE_NM FROM TB_DEAL_CORP_ADM 
+					)T
+					WHERE BASE_CD=(SELECT AREA_CD FROM TB_LOCATION_ADM X WHERE X.LOC_NO = EE.LOCATION_NO)
+				) AREA_NM
+				, (SELECT FLOOR_NM FROM TB_LOCATION_ADM X WHERE X.LOC_NO = EE.LOCATION_NO) FLOOR_NM
+			    , DD.ITEM_CD
+				, DD.ITEM_NM
+				, DD.MAIN_GUBUN
+				, DD.MAIN_GUBUN_NM
+				, DD.ITEM_GUBUN
+				, DD.ITEM_GUBUN_NM
+				, DD.ITEM_MODEL
+				, DD.ITEM_MODEL_NM
+				, DD.ITEM_UNIT
+				, DD.ITEM_UNIT_NM
+				, DD.ITEM_COLOR
+				, DD.ITEM_MAKER
+				, ITEM_FIFO_GUBUN
+				, DD.ITEM_CUS
+				, DD.ITEM_CUS_NM
+				, ISNULL(EE.TM_QTY, 0) TM_QTY
+				, ISNULL(EE.IN_QTY, 0) IN_QTY
+				, ISNULL(EE.OUT_QTY, 0) OUT_QTY
+				, ISNULL(EE.REAL_QTY, 0) REAL_QTY
+			FROM (
+				SELECT
+					Z.ITEM_SEQ
+					, Z.MAIN_GUBUN
+					, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM B WHERE BASE_GROUP_CD = '112' AND Z.MAIN_GUBUN = B.BASE_CD) MAIN_GUBUN_NM
+					, Z.ITEM_GUBUN
+					, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM B WHERE BASE_GROUP_CD = '091' AND Z.ITEM_GUBUN = B.BASE_CD) ITEM_GUBUN_NM
+					, Z.ITEM_MODEL
+					, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM B WHERE BASE_GROUP_CD = '099' AND Z.ITEM_MODEL = B.BASE_CD) ITEM_MODEL_NM
+					, Z.ITEM_CD
+					, Z.ITEM_NM
+					, Z.LHRH_CD
+					, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD = Z.LHRH_CD AND X.BASE_GROUP_CD='097') LHRH_CD_NM
+					, Z.ITEM_COLOR
+					, Z.ITEM_MAKER
+					, Z.BOX_COUNT
+					, Z.ITEM_UNIT
+					, (SELECT BASE_NM FROM TB_COMMON_CODE_ADM X WHERE X.BASE_CD=ITEM_UNIT AND X.BASE_GROUP_CD='036') ITEM_UNIT_NM
+					, ITEM_FIFO_GUBUN
+					, Z.ITEM_CUS
+					, (SELECT DEAL_CORP_NM FROM TB_DEAL_CORP_ADM X WHERE X.DEAL_CORP_CD = Z.ITEM_CUS) ITEM_CUS_NM
+				FROM TB_ITEM_INFO_ADM Z
+				WHERE 1=1
+				AND USE_YN = '001'
+				<if test="mainGubun != null and !mainGubun.equals('')">
+				AND MAIN_GUBUN = #{mainGubun}
+				</if>
+			) DD
+			LEFT OUTER JOIN (
+				SELECT
+					SP_TYPE
+					, SP_CD
+					, BARCODE_NO
+					, LOCATION_NO
+					, LOCATION_CD
+					, SUM(BINPUT) TM_QTY
+					, SUM(AINPUT) IN_QTY
+					, SUM(AOUTPUT) OUT_QTY
+					, SUM(BINPUT)+SUM(AINPUT)-SUM(AOUTPUT) REAL_QTY
+				FROM (
+					SELECT
+						SP_TYPE
+						, SP_CD
+						, BARCODE_NO
+						, LOCATION_NO
+						, LOCATION_CD
+						, ISNULL(CASE WHEN DATE_GUBUN = 'BEFORE' THEN SUM(INPUT-OUTPUT) END, 0) BINPUT
+						, ISNULL(CASE WHEN DATE_GUBUN = 'AFTER' THEN SUM(INPUT) END, 0) AINPUT
+						, ISNULL(CASE WHEN DATE_GUBUN = 'AFTER' THEN SUM(OUTPUT) END, 0) AOUTPUT
+					FROM (
+						SELECT
+							SP_TYPE
+							, SP_CD
+							, SP_DATE
+							, BARCODE_NO
+							, LOCATION_NO
+							, LOCATION_CD
+							, (
+								CASE WHEN AA.SP_DATE <![CDATA[<]]> #{tmMon} + '01' 
+								THEN 'BEFORE'
+								WHEN  AA.SP_DATE <![CDATA[>=]]> #{tmMon} + '01' AND SP_DATE <![CDATA[<=]]> #{tmMon} + '31'
+								THEN 'AFTER'
+								END
+							) DATE_GUBUN
+							, SUM(CASE WHEN SP_GUBUN = '001' THEN SP_QTY ELSE 0 END) INPUT
+							, SUM(CASE WHEN SP_GUBUN = '002' THEN SP_QTY ELSE 0 END) OUTPUT
+						FROM (
+							SELECT
+								SP_NO
+								, SP_SEQ
+								, SP_TYPE
+								, SP_CD
+								, SP_GUBUN
+								, SP_DATE
+								, SP_QTY
+								, SP_BOM_QTY
+								, BARCODE_NO
+								, SOURCE_NO
+								, LOCATION_CD
+								, AREA_CD
+								, FLOOR_CD
+								, LOCATION_NO
+							FROM TB_STOCK_PAYMENT_ADM
+							WHERE 1=1
+							<if test="locationCd != null and !locationCd.equals('')">
+							AND LOCATION_CD = #{locationCd}
+							</if>
+							AND SP_DATE BETWEEN LEFT(#{tmMon},4)+'0101' AND #{tmMon} + '31'
+							UNION ALL
+							
+							SELECT
+								SP_NO
+								, SP_SEQ
+								, SP_TYPE
+								, SP_CD
+								, SP_GUBUN
+								, SP_DATE
+								, SP_QTY
+								, SP_BOM_QTY
+								, BARCODE_NO
+								, SOURCE_NO
+								, LOCATION_CD
+								, AREA_CD
+								, FLOOR_CD
+								, LOCATION_NO
+							FROM TB_STOCK_CLOSING_ADM
+							WHERE 1=1
+							<if test="locationCd != null and !locationCd.equals('')">
+							AND LOCATION_CD = #{locationCd}
+							</if>
+							AND CLOSE_DATE = CONVERT(VARCHAR(4), DATEADD(YYYY, -1, #{tmMon} + '01'), 112)
+						) AA
+						GROUP BY
+							SP_TYPE
+							, SP_CD
+							, SP_DATE
+							, BARCODE_NO
+							, LOCATION_NO
+							, LOCATION_CD
+							, (
+								CASE WHEN  AA.SP_DATE <![CDATA[<]]> #{tmMon} + '01'
+								THEN 'BEFORE'
+								WHEN AA.SP_DATE <![CDATA[>=]]> #{tmMon} + '01' AND AA.SP_DATE <![CDATA[<=]]> #{tmMon} + '31'
+								THEN 'AFTER'
+								END
+							)
+					) BB
+					GROUP BY SP_TYPE, SP_CD,BARCODE_NO,LOCATION_NO,LOCATION_CD,DATE_GUBUN
+				) CC
+				GROUP BY SP_TYPE, SP_CD, BARCODE_NO, LOCATION_NO, LOCATION_CD
+			) EE
+			ON DD.ITEM_SEQ = EE.SP_CD
+		) FF
+		WHERE 1=1
+		<if test="toQtyOption != null and !toQtyOption.equals('')">
+		AND REAL_QTY > 0
+		</if>
+		<if test="itemCusList != null and !itemCusList.equals('')">
+		AND AREA_CD IN ( ${itemCusList} )
+		</if>
+		ORDER BY CASE ITEM_GUBUN WHEN '001' THEN LOCATION_CD END
+	</select>
+	
+	<!-- read -->  
+	<select id="takeOffAdmRead" resultMap="TakeOffAdmVo">
+		SELECT
+			IDX
+			, ITEM_SEQ
+			, BARCODE_NO
+			, TO_QTY
+			, BEFORE_LOC_NO
+			, AFTER_LOC_NO
+			, TO_DATE
+			, TO_WORKER
+			, PRCSS_YN
+			, FAIR_QTY
+			, FAULTY_QTY
+			, REG_ID
+			, REG_DATE
+			, UPD_ID
+			, UPD_DATE
+		FROM TB_TAKEOFF_ADM
+		WHERE	IDX = #{idx}
+	</select>
+	
+ 	<!-- create  -->
+ 	<insert id="takeOffAdmCreate" parameterType="mes.domain.bs.TakeOffAdmVo"> 
+ 		INSERT INTO TB_TAKEOFF_ADM(
+			ITEM_SEQ,
+			BARCODE_NO,
+			TO_QTY,
+			BEFORE_LOC_NO,
+			AFTER_LOC_NO,
+			TO_DATE,
+			TO_WORKER,
+			PRCSS_YN,
+			FAIR_QTY,
+			FAULTY_QTY,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES(
+			#{itemSeq},
+			#{barcodeNo},
+			#{toQty},
+			#{beforeLocNo},
+			#{afterLocNo},
+			#{toDate},
+			#{toWorker},
+			#{prcssYn},
+			#{fairQty},
+			#{faultyQty},
+			#{regId},
+			getDate()
+		)
+		<selectKey resultType="String" keyProperty="idx" order="AFTER">
+    	SELECT IDENT_CURRENT('TB_TAKEOFF_ADM')
+		</selectKey>
+ 	</insert>
+ 	
+	<!-- update   -->
+ 	<update id="takeOffAdmUpdate"> 
+ 		UPDATE	TB_TAKEOFF_ADM 
+		SET
+			<if test="itemSeq != null">ITEM_SEQ = #{itemSeq},</if>
+			<if test="barcodeNo != null">BARCODE_NO = #{barcodeNo},</if>
+			<if test="toQty != null">TO_QTY = #{toQty},</if>
+			<if test="beforeLocNo != null">BEFORE_LOC_NO = #{beforeLocNo},</if>
+			<if test="afterLocNo != null">AFTER_LOC_NO = #{afterLocNo},</if>
+			<if test="toDate != null">TO_DATE = #{toDate},</if>
+			<if test="toWorker != null">TO_WORKER = #{toWorker},</if>
+			<if test="prcssYn != null">PRCSS_YN = #{prcssYn},</if>
+			<if test="fairQty != null">FAIR_QTY = #{fairQty},</if>
+			<if test="faultyQty != null">FAULTY_QTY = #{faultyQty},</if>
+			UPD_ID = #{updId},
+			UPD_DATE = getDate()
+		WHERE	IDX = #{idx}
+ 	</update>
+ 	
+	<!-- delete  --> 
+	<delete id="takeOffAdmDelete">
+		DELETE FROM TB_TAKEOFF_ADM 
+		WHERE IDX = #{idx}
+	</delete>
+	
+	<!--제품 바코드 생성 -->
+	<select id="getTakeOffBarcodeNo" resultType="String">
+		SELECT CONCAT(#{barcodeNo}, ISNULL(RIGHT('000' + CAST(MAX(RIGHT(BARCODE_NO, 3))+1 AS NVARCHAR), 3), '001'))
+		FROM TB_TAKEOFF_ADM
+		WHERE SUBSTRING(BARCODE_NO, 1, 15) = #{barcodeNo}
+	</select>
+	
+</mapper>  

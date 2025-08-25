@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  	
+<mapper namespace="mes.mappers.bm.prcssFaultyOrdAdmMapper">
+	
+	<resultMap id="PrcssFaultyOrdAdmVo" type="mes.domain.bm.PrcssFaultyOrdAdmVo">
+		<result property="idx"			column="IDX"			/>
+		<result property="prcssCd"		column="PRCSS_CD"		/>
+		<result property="prcssNm"		column="PRCSS_NM"		/>
+		<result property="itemSeq"		column="ITEM_SEQ"		/>
+		<result property="itemCd"		column="ITEM_CD"		/>
+		<result property="itemNm"		column="ITEM_NM"		/>
+		
+		<result property="faultyOrd"	column="FAULTY_ORD"		/>
+		<result property="faultyCd"		column="FAULTY_CD"		/>
+		<result property="faultyNm"		column="FAULTY_NM"		/>
+		<result property="useYn"		column="USE_YN"			/>
+		<result property="useYnNm"		column="USE_YN_NM"		/>
+		<result property="etc1"			column="ETC1"			/>
+		<result property="etc2"			column="ETC2"			/>
+		<result property="etc3"			column="ETC3"			/>
+		<result property="regYn"		column="REG_YN"			/>
+		<result property="regId"		column="REG_ID"			/>
+		<result property="regDate"		column="REG_DATE"		/>
+		<result property="updId"		column="UPD_ID"			/>
+		<result property="updDate"		column="UPD_DATE"		/>
+	</resultMap>
+	
+	<!-- 목록조회 -->
+	<select id="listAll" resultMap="PrcssFaultyOrdAdmVo">
+		SELECT 
+			A.ITEM_WORKPLACE PRCSS_CD,
+			B.PRCSS_NM,
+			A.ITEM_SEQ,
+			A.ITEM_CD,
+			A.ITEM_NM,
+			(CASE WHEN COUNT(C.IDX)>0 THEN '등록' ELSE '미등록' END) REG_YN
+		FROM TB_ITEM_INFO_ADM A
+		LEFT OUTER JOIN TB_PRCSS_CODE_ADM B
+		ON A.ITEM_WORKPLACE=B.PRCSS_CD
+		AND B.PRCSS_CD=B.LOWER_PRCSS_CD
+		LEFT OUTER JOIN TB_PRCSS_FAULTY_ORD_ADM C
+		ON A.ITEM_WORKPLACE=C.PRCSS_CD
+		AND A.ITEM_SEQ=C.ITEM_SEQ
+		WHERE 1=1
+		AND A.MAIN_GUBUN='002'
+		AND A.ITEM_GUBUN IN ('001','003')
+		AND A.ITEM_WORKPLACE IS NOT NULL
+		<if test="prcssCd!=null and !prcssCd.equals('')">
+		AND A.ITEM_WORKPLACE=#{prcssCd}
+		</if>
+		GROUP BY A.ITEM_WORKPLACE,B.PRCSS_NM,A.ITEM_SEQ,A.ITEM_CD,A.ITEM_NM
+		HAVING 1=1
+		<if test="regYn!=null and regYn.equals('001')">
+		AND COUNT(C.IDX)>0
+		</if>
+		<if test="regYn!=null and regYn.equals('002')">
+		AND COUNT(C.IDX)=0
+		</if>
+	</select>
+	
+	<!-- 상세조회 -->
+	<select id="list" resultMap="PrcssFaultyOrdAdmVo">
+		SELECT
+			ROW_NUMBER() OVER (ORDER BY -Z.FAULTY_ORD DESC) AS FAULTY_ORD,
+			T.FAULTY_CD,
+			T.FAULTY_NM,
+			ISNULL(Z.USE_YN,'001') USE_YN
+		FROM
+		(
+			SELECT 
+				A.FAULTY_CD,
+				B.BASE_INFO_NM FAULTY_NM
+			FROM TB_PRCSS_FAULTY_ORD_ADM A
+			LEFT OUTER JOIN TB_BASE_INFO_ADM B 
+			ON A.FAULTY_CD=B.BASE_INFO_CD
+			WHERE 1=1
+			<if test="prcssCd!=null and !prcssCd.equals('')">
+			AND A.PRCSS_CD=#{prcssCd}
+			</if>
+			<if test="itemSeq!=null and !itemSeq.equals('')">
+			AND A.ITEM_SEQ=#{itemSeq}
+			</if>
+		UNION 
+			SELECT 
+				BASE_INFO_CD FAULTY_CD
+				, BASE_INFO_NM FAULTY_NM
+			FROM TB_BASE_INFO_ADM A
+			WHERE 1=1
+			AND BASE_INFO_TYPE = 'FT'
+			AND ETC1 = '002' 
+			AND ETC3 = ''
+			AND ( ETC4 LIKE '%' + #{prcssCd} + '%' OR ETC4 IS NULL OR ETC4 = '' )
+			AND BASE_INFO_GUBUN = '003'
+			AND USE_YN = '001'
+		
+		)T LEFT OUTER JOIN TB_PRCSS_FAULTY_ORD_ADM Z
+		ON T.FAULTY_CD=Z.FAULTY_CD
+		<if test="prcssCd!=null and !prcssCd.equals('')">
+		AND Z.PRCSS_CD=#{prcssCd}
+		</if>
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+		AND Z.ITEM_SEQ=#{itemSeq}
+		</if>
+		WHERE 1=1
+		<if test="useYn!=null and !useYn.equals('')">
+		AND ISNULL(Z.USE_YN,'001') = #{useYn}
+		</if>
+		ORDER BY -Z.FAULTY_ORD DESC
+	</select>
+	
+	<!-- 등록 -->
+	<insert id="create" parameterType="java.util.List">
+		INSERT INTO TB_PRCSS_FAULTY_ORD_ADM		(
+			PRCSS_CD,
+			ITEM_SEQ,
+			FAULTY_ORD,
+			FAULTY_CD,
+			USE_YN,
+			ETC1,
+			ETC2,
+			ETC3,
+			REG_ID,
+			REG_DATE
+		) 
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+		(
+			#{item.prcssCd},
+			#{item.itemSeq},
+			#{item.faultyOrd},
+			#{item.faultyCd},
+			#{item.useYn},
+			#{item.etc1},
+			#{item.etc2},
+			#{item.etc3},
+			#{item.regId},
+			GETDATE()
+		)
+		</foreach>
+		
+	</insert>
+	
+	<!-- 수정 -->
+	
+	
+	<!-- 삭제 -->
+	<delete id="delete">
+		DELETE FROM TB_PRCSS_FAULTY_ORD_ADM		 
+		WHERE 1=1
+		<if test="idx!=null and !idx.equals('')">
+		AND IDX = #{idx}
+		</if>
+		<if test="prcssCd!=null and !prcssCd.equals('')">
+		AND	PRCSS_CD = #{prcssCd}
+		</if>
+		<if test="itemSeq!=null and !itemSeq.equals('')">
+		AND	ITEM_SEQ = #{itemSeq}
+		</if>
+		<if test="itemSeqArr!=null and itemSeqArr.length>0">
+			AND	ITEM_SEQ IN
+			<foreach collection="itemSeqArr" item="item" open="(" separator="," close=")">
+				#{item}
+			</foreach>
+		</if>
+	</delete>
+	
+	
+	<select id="baseInfoAdmFTList" resultMap="PrcssFaultyOrdAdmVo">
+		SELECT 
+			ROW_NUMBER() OVER (ORDER BY BASE_INFO_CD ASC) AS FAULTY_ORD
+			, BASE_INFO_CD FAULTY_CD
+			, BASE_INFO_NM FAULTY_NM
+		FROM TB_BASE_INFO_ADM A
+		WHERE 1=1
+		AND BASE_INFO_TYPE = 'FT'
+		AND ETC1 = '002' -- 봉제 불량유형만
+		AND ETC3 = ''
+		AND ( ETC4 LIKE '%' + #{prcssCd} + '%' OR ETC4 IS NULL OR ETC4 = '' ) -- 해당 공정의 불량유형을 조회되도록, 공정이 지정안된 불량유형까지 조회
+		AND BASE_INFO_GUBUN = '003'
+		AND USE_YN = '001'
+		ORDER BY  BASE_INFO_CD ASC
+	</select>
+	
+	
+</mapper>	

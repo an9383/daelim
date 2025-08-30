@@ -12,6 +12,7 @@
           <div class="top-bar-brand">
             <!-- toggle aside menu -->
             <button class="hamburger hamburger-squeeze mr-2" id="aside-menu" type="button" style="background:#30318b!important;" data-toggle="aside-menu" aria-label="toggle aside menu"><span class="hamburger-box"><span class="hamburger-inner"></span></span></button> <!-- /toggle aside menu -->
+            <!-- daelim logo -->
             <a href="/main"><img src="/resources/assets/images/logo/daerim_logo.jpg" alt="homepage" class="dark-logo" style="width: auto; height: 30px;"/>
              </a>
           </div><!-- /.top-bar-brand -->

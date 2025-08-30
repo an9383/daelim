@@ -5,7 +5,7 @@
 <% pageContext.setAttribute("newLineChar", "\n"); %>
 
 
-<%@include file="../layout/top.jsp" %>
+<%@ include file="../layout/top.jsp" %>
 <!--
 <body data-spy="scroll" data-target="page" data-offset="76">
 -->
@@ -19,10 +19,10 @@
 <![endif]-->
 
 <!-- .app-header -->
-<%@include file="../layout/header.jsp" %>
+<%@ include file="../layout/header.jsp" %>
 <!-- /.app-header -->
 
 <!-- .app-aside -->
-<%@include file="../layout/aside.jsp" %>
+<%@ include file="../layout/aside.jsp" %>
 <!-- /.app-aside -->
 
